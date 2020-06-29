@@ -1,20 +1,18 @@
+# e3rewrertfregtr
 import os
-file_path = '/Users/xiaomi/Documents/GitHub/practice1/HTML/index.html'
-t = os.getcwd()
 
 _sl = ["practice1", "Git"]
-_wd1 = f'{t[:t.rfind(_sl[0])+len(_ls[0])]}\\HTML'
-_wd2 = f'{t[:t.rfind(_sl[1])+len(_ls[0])]}\\HTML'
-
-_rF = []]
+t = os.getcwd()
+_rF =None
 for item in _sl:
     _wd = f'{t[:t.rfind(item)+len(item)]}\\HTML'
-    _rF.append(os.path.isfile(f'{_wd}\\index.html'))
-    
+    if os.path.isfile(f'{_wd}\\index.html'):
+        _fr = _wd1
+        break
 
-if os.path.isfile(f'{_wd1}\\index.html') or os.path.isfile(f'{_wd2}\\index.html'):
+if _rF is not None:
     tags = []
-    with open (file_path) as f:
+    with open (_rF) as f:
         for line1 in range(1):
             next(f)
         for line in f:
