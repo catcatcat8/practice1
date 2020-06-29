@@ -6,7 +6,7 @@ _sl = ["practice1", "Git"]
 _wd1 = f'{t[:t.rfind(_sl[0])+len(_ls[0])]}\\HTML'
 _wd2 = f'{t[:t.rfind(_sl[1])+len(_ls[0])]}\\HTML'
 
-_rF = None
+_rF = []]
 for item in _sl:
     _wd = f'{t[:t.rfind(item)+len(item)]}\\HTML'
     _rF.append(os.path.isfile(f'{_wd}\\index.html'))
