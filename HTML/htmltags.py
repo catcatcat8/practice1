@@ -1,6 +1,5 @@
 import os
-t = os.getcwd()
-_wd = f'{t[:t.rfind("Git")+3]}\\aSystem'
+file_path = '/Users/xiaomi/Documents/GitHub/practice1/HTML/index.html'
 if os.path.isfile(file_path):
     tags = []
     with open (file_path) as f:
