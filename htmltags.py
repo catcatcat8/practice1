@@ -1,6 +1,7 @@
 import os.path
 file_path = '/Users/xiaomi/Documents/GitHub/practice1/HTML/index.html'
 
+t = os.getcwd()
 _wd = f'{t[:t.rfind("Git")+3]}\\HTML'
 
 if os.path.isfile(file_path):
