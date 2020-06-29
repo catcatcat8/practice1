@@ -1,8 +1,10 @@
 import os
 file_path = '/Users/xiaomi/Documents/GitHub/practice1/HTML/index.html'
 t = os.getcwd()
-_wd1 = f'{t[:t.rfind("practice1")+9]}\\HTML'
-_wd2 = f'{t[:t.rfind("Git")+3]}\\HTML'
+
+_sl = ["practice1", "Git"]
+_wd1 = f'{t[:t.rfind(_sl[0])+len(_ls[0])]}\\HTML'
+_wd2 = f'{t[:t.rfind(_sl[1])+len(_ls[0])]}\\HTML'
 
 if os.path.isfile(f'{_wd1}\\index.html') or os.path.isfile(f'{_wd2}\\index.html') :
     tags = []
