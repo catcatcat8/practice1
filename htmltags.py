@@ -1,5 +1,8 @@
 import os.path
 file_path = '/Users/xiaomi/Documents/GitHub/practice1/HTML/index.html'
+
+_wd = f'{t[:t.rfind("Git")+3]}\\HTML'
+
 if os.path.isfile(file_path):
     tags = []
     with open (file_path) as f:
