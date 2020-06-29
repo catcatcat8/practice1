@@ -6,7 +6,13 @@ _sl = ["practice1", "Git"]
 _wd1 = f'{t[:t.rfind(_sl[0])+len(_ls[0])]}\\HTML'
 _wd2 = f'{t[:t.rfind(_sl[1])+len(_ls[0])]}\\HTML'
 
-if os.path.isfile(f'{_wd1}\\index.html') or os.path.isfile(f'{_wd2}\\index.html') :
+_rF = None
+for item in _sl:
+    _wd = f'{t[:t.rfind(item)+len(item)]}\\HTML'
+    _rF.append(os.path.isfile(f'{_wd}\\index.html'))
+    
+
+if os.path.isfile(f'{_wd1}\\index.html') or os.path.isfile(f'{_wd2}\\index.html'):
     tags = []
     with open (file_path) as f:
         for line1 in range(1):
