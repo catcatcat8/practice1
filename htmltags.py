@@ -5,12 +5,12 @@ def file_existence():
     """Вернуть путь к файлу, если файл существует"""
 
     err_event = None  # возвращаемый текст ошибки
-    folderslist = ["practice1", "Git"]  # Список корневых папок
+    folderslist = ["practice1", "Git"]  # список корневых папок
     cur_dir = os.getcwd()
     file_path = None  # путь к обрабатываему файлу
     for item in folderslist:
         work_dir = f'{cur_dir[:cur_dir.rfind(item)+len(item)]}\\HTML'
-        # Проверка существования файла
+        # проверка существования файла
         if os.path.isfile(f'{work_dir}\\index.html'):
             file_path = work_dir
             break
@@ -30,14 +30,15 @@ def html_tags():
                 if tag1:
                     tag2 = tag1[0].split('>')
                     tag = tag2[0]
+                # проверка на открывающий и уникальный тег
                 if (tag[0] == '<') and (tag[1].isalpha()) and (tag[1:] not in tags):
                     tags.append(tag[1:])
     return tags, err_event
 
 def css_styles():
-    """Вернуть список подгружаемых локальных css документов"""
+    """Вернуть список путей подгружаемых локальных css документов"""
 
-    styles = []  #возвращаемый список стилей
+    styles = []  # возвращаемый список стилей
     file_path, err_event = file_existence()
     if file_path is not None:
         with open (f'{file_path}\\index.html') as f:
@@ -51,7 +52,7 @@ def css_styles():
                             link = item
                             break
                     pos = link.find('href="') + 6  # номер первого символа стиля
-                    if (link[pos:pos+5] != 'https'):
+                    if (link[pos:pos+5] != 'https'):  # если файл - локальный
                         styles.append(link[pos:-2])
     return styles, err_event
 
