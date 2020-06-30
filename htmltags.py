@@ -7,17 +7,17 @@ def read_file():
     tags = []  # возвращаемый список переменных
     err_event = None  # возвращаемый текст ошибки
     folderslist = ["practice1", "Git"]  # Список корневых папок
-    t = os.getcwd()
-    _rF = None  # путь к обрабатываему файлу
+    cur_dir = os.getcwd()
+    file_path = None  # путь к обрабатываему файлу
     for item in folderslist:
-        _wd = f'{t[:t.rfind(item)+len(item)]}\\HTML'
+        work_dir = f'{cur_dir[:cur_dir.rfind(item)+len(item)]}\\HTML'
         # Проверка существования файла
-        if os.path.isfile(f'{_wd}\\index.html'):
-            _rF = _wd
+        if os.path.isfile(f'{work_dir}\\index.html'):
+            file_path = work_dir
             break
-    if _rF is not None:
+    if file_path is not None:
         
-        with open (f'{_rF}\\index.html') as f:
+        with open (f'{file_path}\\index.html') as f:
             for line in f:
                 tag1 = line.split()
                 if tag1:
