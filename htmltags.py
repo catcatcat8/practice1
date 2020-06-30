@@ -1,10 +1,9 @@
 # Лебедев Евгений Получение оптимизационного файла (минимизация структуры подгружаемых каскадных таблиц в HTML)
 import os
 
-def read_file():
-    """Вернуть список тегов"""
+def file_existence():
+    """Вернуть путь к файлу, если файл существует"""
 
-    tags = []  # возвращаемый список переменных
     err_event = None  # возвращаемый текст ошибки
     folderslist = ["practice1", "Git"]  # Список корневых папок
     cur_dir = os.getcwd()
@@ -15,8 +14,17 @@ def read_file():
         if os.path.isfile(f'{work_dir}\\index.html'):
             file_path = work_dir
             break
+    if file_path is None:
+        err_event = "Файл отсутствует!"
+    return file_path, err_event
+
+def read_file():
+    """Вернуть список тегов"""
+
+    tags = []  # возвращаемый список переменных
+    file_path, err_event = file_existence()
     if file_path is not None:
-        
+
         with open (f'{file_path}\\index.html') as f:
             for line in f:
                 tag1 = line.split()
@@ -25,8 +33,6 @@ def read_file():
                     tag = tag2[0]
                 if (tag[0] == '<') and (tag[1].isalpha()) and (tag[1:] not in tags):
                     tags.append(tag[1:])
-    else:
-        err_event = "Файл отсутствует!"
     return tags, err_event
 
 
