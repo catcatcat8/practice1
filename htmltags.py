@@ -53,7 +53,7 @@ def css_styles():
                             break
                     pos = link.find('href="') + 6  # номер первого символа стиля
                     if (link[pos:pos+5] != 'https'):  # если файл - локальный
-                        styles.append(link[pos:-2])
+                        styles.append(link[link.rfind('/')+1:-2])
     return styles, err_event
 
 
