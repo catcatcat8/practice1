@@ -1,4 +1,4 @@
-# Лебедев Евгений Получение списка html тегов документа
+# Лебедев Евгений Получение оптимизационного файла (минимизация структуры подгружаемых каскадных таблиц в HTML)
 import os
 
 def read_file():
@@ -6,10 +6,10 @@ def read_file():
 
     tags = []  # возвращаемый список переменных
     err_event = None  # возвращаемый текст ошибки
-    _sl = ["practice1", "Git"]  # Список корневых папок
+    folderslist = ["practice1", "Git"]  # Список корневых папок
     t = os.getcwd()
     _rF = None  # путь к обрабатываему файлу
-    for item in _sl:
+    for item in folderslist:
         _wd = f'{t[:t.rfind(item)+len(item)]}\\HTML'
         # Проверка существования файла
         if os.path.isfile(f'{_wd}\\index.html'):
@@ -18,14 +18,12 @@ def read_file():
     if _rF is not None:
         
         with open (f'{_rF}\\index.html') as f:
-            for line1 in range(1):
-                next(f)
             for line in f:
                 tag1 = line.split()
                 if tag1:
                     tag2 = tag1[0].split('>')
                     tag = tag2[0]
-                if (tag[0] == '<') and (tag[1] != '/') and (tag[1:] not in tags):
+                if (tag[0] == '<') and (tag[1].isalpha()) and (tag[1:] not in tags):
                     tags.append(tag[1:])
     else:
         err_event = "Файл отсутствует!"
