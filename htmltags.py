@@ -18,13 +18,12 @@ def file_existence():
         err_event = "Файл отсутствует!"
     return file_path, err_event
 
-def read_file():
+def html_tags():
     """Вернуть список тегов"""
 
     tags = []  # возвращаемый список переменных
     file_path, err_event = file_existence()
     if file_path is not None:
-
         with open (f'{file_path}\\index.html') as f:
             for line in f:
                 tag1 = line.split()
@@ -35,13 +34,45 @@ def read_file():
                     tags.append(tag[1:])
     return tags, err_event
 
+def css_styles():
+    """Вернуть список подгружаемых локальных css документов"""
+
+    styles = []  #возвращаемый список стилей
+    file_path, err_event = file_existence()
+    if file_path is not None:
+        with open (f'{file_path}\\index.html') as f:
+            for line in f:
+                link_split = line.split()
+                if link_split:
+                    first_link_split = link_split[0]
+                if (first_link_split == '<link') and (line.find('rel="stylesheet"')!=-1):
+                    for item in link_split:
+                        if item.find('href="')!=-1:
+                            link = item
+                            break
+                    pos = link.find('href="') + 6  # номер первого символа стиля
+                    if (link[pos:pos+5] != 'https'):
+                        styles.append(link[pos:-2])
+    return styles, err_event
+
 
 if __name__ == "__main__":
-    tags, err_event = read_file()
+    tags, err_event = html_tags()
     if err_event is None:
         # получен список тегов
+        print ("HTML tags:")
         [print(x.upper()) for x in tags]
     else:
        # ошибка формирования списка
         print(err_event)
+
+    styles, err_event = css_styles()
+    if err_event is None:
+        # получен список локальных стилей
+        print ("Local CSS styles:")
+        [print(x) for x in styles]
+    else:
+       # ошибка формирования списка
+        print(err_event)
+
 
