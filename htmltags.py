@@ -1,7 +1,7 @@
 # Лебедев Евгений Получение оптимизационного файла (минимизация структуры подгружаемых каскадных таблиц в HTML)
 import os
 
-def file_existence():
+def file_existence(_targetFile):
     """Вернуть путь к файлу, если файл существует"""
 
     err_event = None  # возвращаемый текст ошибки
@@ -11,20 +11,20 @@ def file_existence():
     for item in folderslist:
         work_dir = f'{cur_dir[:cur_dir.rfind(item)+len(item)]}\\HTML'
         # проверка существования файла
-        if os.path.isfile(f'{work_dir}\\index.html'):
+        if os.path.isfile(f'{work_dir}\\{_targetFile}'):
             file_path = work_dir
             break
     if file_path is None:
         err_event = "Файл отсутствует!"
     return file_path, err_event
 
-def html_tags():
+def html_tags(file_path):
     """Вернуть список тегов"""
 
     tags = []  # возвращаемый список переменных
-    file_path, err_event = file_existence()
+    # file_path, err_event = file_existence()
     if file_path is not None:
-        with open (f'{file_path}\\index.html') as f:
+        with open (f'{file_path}\\{_targetFile}}') as f:
             for line in f:
                 tag1 = line.split()
                 if tag1:
@@ -89,8 +89,10 @@ def css_styles():
 
 if __name__ == "__main__":
 
+    _targetFile = "index.html"
+    file_path, err_event = file_existence(_targetFile)
     # --- Шаг 1
-    tags, err_event = html_tags()
+    tags, err_event = html_tags(_targetFile)
     if err_event is None:
         # получен список тегов
         print ("HTML tags:")
