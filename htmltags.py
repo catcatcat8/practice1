@@ -92,26 +92,27 @@ if __name__ == "__main__":
     _targetFile = "index.html"
     file_path, err_event = file_existence(_targetFile)
     # --- Шаг 1
-    tags, err_event = html_tags(file_path)
-    if err_event is None:
-        # получен список тегов
-        print ("HTML tags:")
-        [print(x.upper()) for x in tags]
-    else:
-       # ошибка формирования списка
-        print(err_event)
+    if file_path is not None:
+        tags, err_event = html_tags(file_path)
+        if err_event is None:
+            # получен список тегов
+            print ("HTML tags:")
+            [print(x.upper()) for x in tags]
+        else:
+        # ошибка формирования списка
+            print(err_event)
 
-    # --- Шаг 2
-    styles, err_event = css_styles()
-    if err_event is None:
-        # получен список локальных стилей
-        print ("Local CSS styles:")
-        [print(x) for x in styles]
-    else:
-       # ошибка формирования списка
-        print(err_event)
+        # --- Шаг 2
+        styles, err_event = css_styles()
+        if err_event is None:
+            # получен список локальных стилей
+            print ("Local CSS styles:")
+            [print(x) for x in styles]
+        else:
+        # ошибка формирования списка
+            print(err_event)
 
-    # --- Шаг 3
-    classes = class_list(tags)
-    # список классов для каждого тега
-    print (classes)
+        # --- Шаг 3
+        classes = class_list(tags)
+        # список классов для каждого тега
+        print (classes)
