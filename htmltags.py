@@ -35,6 +35,32 @@ def html_tags():
                     tags.append(tag[1:])
     return tags, err_event
 
+def class_list(tags):
+    """Вернуть для каждого тега список классов"""
+
+    file_path, err_event = file_existence()
+    css_classes = {}
+    if err_event is None:
+        # теги до body - не существенные
+        for i,tag in enumerate(tags):
+            if tag == 'body':
+                pos_body = i
+                break
+        s_tags = tags[pos_body+1:]  # существенные теги
+        for tag in s_tags:
+            class_list = []
+            with open (f'{file_path}\\index.html') as f:
+                for line in f:
+                    if f'{tag} class' in line:
+                        pos = line.find('class="')
+                        cur_class1 = line[pos+7:]
+                        cur_class = cur_class1[:cur_class1.find('"')]
+                        if cur_class not in class_list:
+                            class_list.append(cur_class)
+            css_classes[f'{tag}'] = class_list
+    return css_classes
+
+
 def css_styles():
     """Вернуть список путей подгружаемых локальных css документов"""
 
@@ -80,4 +106,5 @@ if __name__ == "__main__":
         print(err_event)
 
     # --- Шаг 3
-
+    classes = class_list(tags)
+    print (classes)
