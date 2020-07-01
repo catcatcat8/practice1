@@ -98,21 +98,21 @@ if __name__ == "__main__":
             # получен список тегов
             print ("HTML tags:")
             [print(x.upper()) for x in tags]
+            # --- Шаг 2
+            styles, err_event = css_styles()
+            if err_event is None:
+                # получен список локальных стилей
+                print ("Local CSS styles:")
+                [print(x) for x in styles]
+                # --- Шаг 3
+                classes = class_list(tags)
+                # список классов для каждого тега
+                print (classes)
+            else:
+            # ошибка формирования списка
+                print(err_event)
         else:
         # ошибка формирования списка
             print(err_event)
 
-        # --- Шаг 2
-        styles, err_event = css_styles()
-        if err_event is None:
-            # получен список локальных стилей
-            print ("Local CSS styles:")
-            [print(x) for x in styles]
-        else:
-        # ошибка формирования списка
-            print(err_event)
 
-        # --- Шаг 3
-        classes = class_list(tags)
-        # список классов для каждого тега
-        print (classes)
