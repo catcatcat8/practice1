@@ -58,6 +58,8 @@ def css_styles():
 
 
 if __name__ == "__main__":
+
+    # --- Шаг 1
     tags, err_event = html_tags()
     if err_event is None:
         # получен список тегов
@@ -67,6 +69,7 @@ if __name__ == "__main__":
        # ошибка формирования списка
         print(err_event)
 
+    # --- Шаг 2
     styles, err_event = css_styles()
     if err_event is None:
         # получен список локальных стилей
@@ -76,4 +79,5 @@ if __name__ == "__main__":
        # ошибка формирования списка
         print(err_event)
 
+    # --- Шаг 3
 
