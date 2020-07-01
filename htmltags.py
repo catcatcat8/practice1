@@ -22,8 +22,8 @@ def file_existence(_targetFile):
 def html_tags(file_path):
     """Вернуть список тегов"""
 
+    err_event = None  # возвращаемый текст ошибки
     tags = []  # возвращаемый список переменных
-    # file_path, err_event = file_existence()
     if file_path is not None:
         with open (file_path) as f:
             for line in f:
@@ -34,12 +34,13 @@ def html_tags(file_path):
                 # проверка на открывающий и уникальный тег
                 if (tag[0] == '<') and (tag[1].isalpha()) and (tag[1:] not in tags):
                     tags.append(tag[1:])
+    if not tags:
+        err_event = "Нет ни одного тега html!"
     return tags, err_event
 
-def class_list(tags):
+def class_list(file_path, tags):
     """Вернуть для каждого тега список классов"""
 
-    file_path, err_event = file_existence()
     css_classes = {}
     if err_event is None:
         # теги до body - не существенные
@@ -50,7 +51,7 @@ def class_list(tags):
         s_tags = tags[pos_body+1:]  # существенные теги
         for tag in s_tags:
             class_list = []
-            with open (f'{file_path}\\index.html') as f:
+            with open (file_path) as f:
                 for line in f:
                     if f'<{tag}' in line:
                         pos1 = line.find(f'{tag}')
@@ -69,10 +70,10 @@ def class_list(tags):
 def css_styles():
     """Вернуть список путей подгружаемых локальных css документов"""
 
+    err_event = None  # возвращаемый текст ошибки
     styles = []  # возвращаемый список стилей
-    file_path, err_event = file_existence()
     if file_path is not None:
-        with open (f'{file_path}\\index.html') as f:
+        with open (file_path) as f:
             for line in f:
                 link_split = line.split()
                 if link_split:
@@ -85,6 +86,8 @@ def css_styles():
                     pos = link.find('href="') + 6  # номер первого символа стиля
                     if (link[pos:pos+5] != 'https'):  # если файл - локальный
                         styles.append(link[link.rfind('/')+1:-2])
+    if not styles:
+        err_event = "Нет ни одного локального стиля!"
     return styles, err_event
 
 
@@ -106,14 +109,15 @@ if __name__ == "__main__":
                 print ("Local CSS styles:")
                 [print(x) for x in styles]
                 # --- Шаг 3
-                classes = class_list(tags)
+                classes = class_list(file_path, tags)
                 # список классов для каждого тега
                 print (classes)
             else:
-            # ошибка формирования списка
+            # ошибка формирования списка локальных стилей
                 print(err_event)
         else:
-        # ошибка формирования списка
+        # ошибка формирования списка html тегов
             print(err_event)
-
-
+    else:
+        # ошибка существования файла
+        print(err_event)
