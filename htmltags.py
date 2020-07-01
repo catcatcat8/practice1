@@ -51,12 +51,16 @@ def class_list(tags):
             class_list = []
             with open (f'{file_path}\\index.html') as f:
                 for line in f:
-                    if f'{tag} class' in line:
-                        pos = line.find('class="')
-                        cur_class1 = line[pos+7:]
-                        cur_class = cur_class1[:cur_class1.find('"')]
-                        if cur_class not in class_list:
-                            class_list.append(cur_class)
+                    if f'<{tag}' in line:
+                        pos1 = line.find(f'{tag}')
+                        line2 = line[pos1:]
+                        pos2 = line2.find('>')
+                        cur_tag = line2[:pos2]
+                        if 'class="' in cur_tag:
+                            cur_class2 = cur_tag[cur_tag.find('class="')+7:]
+                            cur_class = cur_class2[:cur_class2.find('"')]
+                            if cur_class and cur_class not in class_list:
+                                class_list.append(cur_class)
             css_classes[f'{tag}'] = class_list
     return css_classes
 
@@ -107,4 +111,5 @@ if __name__ == "__main__":
 
     # --- Шаг 3
     classes = class_list(tags)
+    # список классов для каждого тега
     print (classes)
