@@ -10,9 +10,10 @@ def file_existence(_targetFile):
     file_path = None  # путь к обрабатываему файлу
     for item in folderslist:
         work_dir = f'{cur_dir[:cur_dir.rfind(item)+len(item)]}\\HTML'
+        _tmp = f'{work_dir}\\{_targetFile}'
         # проверка существования файла
-        if os.path.isfile(f'{work_dir}\\{_targetFile}'):
-            file_path = work_dir
+        if os.path.isfile(_tmp):
+            file_path = _tmp
             break
     if file_path is None:
         err_event = "Файл отсутствует!"
