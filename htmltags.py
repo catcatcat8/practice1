@@ -24,7 +24,7 @@ def html_tags(file_path):
     tags = []  # возвращаемый список переменных
     # file_path, err_event = file_existence()
     if file_path is not None:
-        with open (f'{file_path}\\{_targetFile}}') as f:
+        with open (file_path) as f:
             for line in f:
                 tag1 = line.split()
                 if tag1:
@@ -92,7 +92,7 @@ if __name__ == "__main__":
     _targetFile = "index.html"
     file_path, err_event = file_existence(_targetFile)
     # --- Шаг 1
-    tags, err_event = html_tags(_targetFile)
+    tags, err_event = html_tags(file_path)
     if err_event is None:
         # получен список тегов
         print ("HTML tags:")
