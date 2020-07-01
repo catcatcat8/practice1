@@ -121,3 +121,4 @@ if __name__ == "__main__":
     else:
         # ошибка существования файла
         print(err_event)
+        
