@@ -1,6 +1,17 @@
 # Лебедев Евгений Получение оптимизационного файла (минимизация структуры подгружаемых каскадных таблиц в HTML)
 import os
 
+class Htmlobject:
+    """Класс, описываюший объект HTML"""
+
+    def __init__ (self, tag_name, class_names):  # инициализация
+        self.tag_name = tag_name
+        self.class_names = class_names
+
+    def htmlobject_print(self):
+        print(f'\nТег: {self.tag_name}\nИспользуемые классы CSS: {self.class_names}')  # вывод информации об объекте
+        
+
 def file_existence(_targetFile):
     """Вернуть путь к файлу, если файл существует"""
 
@@ -122,3 +133,11 @@ if __name__ == "__main__":
         # ошибка существования файла
         print(err_event)
         
+    # Формирование списка объектов класса
+    myobjects = []
+    for elem in classes:  # для каждого объекта словаря
+        value = classes[elem]
+        myobjects.append(Htmlobject(elem,value))
+    # Вывод информации об объектах
+    for obj in myobjects:
+        obj.htmlobject_print()
