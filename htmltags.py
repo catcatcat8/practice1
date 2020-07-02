@@ -2,7 +2,7 @@
 import os
 
 class Htmlobject:
-    """Класс, описываюший объект HTML"""
+    """Класс, описывающий объект HTML"""
 
     def __init__ (self, tag_name, class_names):  # инициализация
         self.tag_name = tag_name
@@ -38,13 +38,15 @@ def html_tags(file_path):
     if file_path is not None:
         with open (file_path) as f:
             for line in f:
-                tag1 = line.split()
-                if tag1:
-                    tag2 = tag1[0].split('>')
-                    tag = tag2[0]
-                # проверка на открывающий и уникальный тег
-                if (tag[0] == '<') and (tag[1].isalpha()) and (tag[1:] not in tags):
-                    tags.append(tag[1:])
+                while (line.find('<') != -1):
+                    line = line[line.find('<'):]
+                    split_lines = line.split()
+                    first_tag = split_lines[0].split('>')
+                    tag = first_tag[0]
+                    # проверка на открывающий и уникальный тег
+                    if (tag[0] == '<') and (tag[1].isalpha()) and (tag[1:] not in tags):
+                        tags.append(tag[1:])
+                    line = line[line.find(f'{tag}')+len(tag)+1:]
     if not tags:
         err_event = "Нет ни одного тега html!"
     return tags, err_event
@@ -55,23 +57,19 @@ def class_list(file_path, tags):
     css_classes = {}
     if err_event is None:
         # теги до body - не существенные
-        for i,tag in enumerate(tags):
-            if tag == 'body':
-                pos_body = i
-                break
-        s_tags = tags[pos_body+1:]  # существенные теги
+        s_tags = tags[tags.index('body')+1:]  # существенные теги
         for tag in s_tags:
             class_list = []
             with open (file_path) as f:
                 for line in f:
                     if f'<{tag}' in line:
                         pos1 = line.find(f'{tag}')
-                        line2 = line[pos1:]
-                        pos2 = line2.find('>')
-                        cur_tag = line2[:pos2]
+                        line = line[pos1:]
+                        pos2 = line.find('>')
+                        cur_tag = line[:pos2]
                         if 'class="' in cur_tag:
-                            cur_class2 = cur_tag[cur_tag.find('class="')+7:]
-                            cur_class = cur_class2[:cur_class2.find('"')]
+                            cur_class = cur_tag[cur_tag.find('class="')+7:]
+                            cur_class = cur_class[:cur_class.find('"')]
                             if cur_class and cur_class not in class_list:
                                 class_list.append(cur_class)
             css_classes[f'{tag}'] = class_list
@@ -89,9 +87,9 @@ def css_styles():
                 link_split = line.split()
                 if link_split:
                     first_link_split = link_split[0]
-                if (first_link_split == '<link') and (line.find('rel="stylesheet"')!=-1):
+                if (first_link_split == '<link') and (line.find('rel="stylesheet"') != -1):
                     for item in link_split:
-                        if item.find('href="')!=-1:
+                        if item.find('href="') != -1:
                             link = item
                             break
                     pos = link.find('href="') + 6  # номер первого символа стиля
@@ -123,6 +121,14 @@ if __name__ == "__main__":
                 classes = class_list(file_path, tags)
                 # список классов для каждого тега
                 print (classes)
+                # Формирование списка объектов класса
+                myobjects = []
+                for elem in classes:  # для каждого объекта словаря
+                    value = classes[elem]
+                    myobjects.append(Htmlobject(elem, value))
+                # Вывод информации об объектах
+                for obj in myobjects:
+                    obj.htmlobject_print()
             else:
             # ошибка формирования списка локальных стилей
                 print(err_event)
@@ -132,12 +138,3 @@ if __name__ == "__main__":
     else:
         # ошибка существования файла
         print(err_event)
-        
-    # Формирование списка объектов класса
-    myobjects = []
-    for elem in classes:  # для каждого объекта словаря
-        value = classes[elem]
-        myobjects.append(Htmlobject(elem,value))
-    # Вывод информации об объектах
-    for obj in myobjects:
-        obj.htmlobject_print()
