@@ -51,31 +51,6 @@ def html_tags(file_path):
         err_event = "Нет ни одного тега html!"
     return tags, err_event
 
-def class_list(file_path, tags):
-    """Вернуть для каждого тега список классов"""
-
-    css_classes = {}
-    if err_event is None:
-        # теги до body - не существенные
-        s_tags = tags[tags.index('body')+1:]  # существенные теги
-        for tag in s_tags:
-            class_list = []
-            with open (file_path) as f:
-                for line in f:
-                    if f'<{tag}' in line:
-                        pos1 = line.find(f'{tag}')
-                        line = line[pos1:]
-                        pos2 = line.find('>')
-                        cur_tag = line[:pos2]
-                        if 'class="' in cur_tag:
-                            cur_class = cur_tag[cur_tag.find('class="')+7:]
-                            cur_class = cur_class[:cur_class.find('"')]
-                            if cur_class and cur_class not in class_list:
-                                class_list.append(cur_class)
-            css_classes[f'{tag}'] = class_list
-    return css_classes
-
-
 def css_styles(file_path):
     """Вернуть список путей подгружаемых локальных css документов"""
 
@@ -99,11 +74,62 @@ def css_styles(file_path):
         err_event = "Нет ни одного локального стиля!"
     return styles, err_event
 
-def css_work(file_path):
+def class_list(file_path, tags):
+    """Вернуть для каждого тега список классов"""
+
+    css_classes = {}
+    if err_event is None:
+        for tag in tags:
+            class_list = []
+            with open (file_path) as f:
+                for line in f:
+                    if f'<{tag}' in line:
+                        pos1 = line.find(f'{tag}')
+                        line = line[pos1:]
+                        pos2 = line.find('>')
+                        cur_tag = line[:pos2]
+                        if 'class="' in cur_tag:
+                            cur_class = cur_tag[cur_tag.find('class="')+7:]
+                            cur_class = cur_class[:cur_class.find('"')]
+                            cur_classes = cur_class.split()
+                            for each_cur_class in cur_classes:
+                                if each_cur_class and each_cur_class not in class_list:
+                                    class_list.append(each_cur_class)
+            css_classes[f'{tag}'] = class_list
+    return css_classes
+
+def css_work(file_path, dict_tag_class):
     """Вернуть словарь {название класса/ID: его содержимое CSS} """
 
-    print(f'Нашел файл CSS {file_path}')
-
+    print(f'\nФайл CSS {file_path}')
+    all_used_classes = []  # список всех используемых классов в html
+    all_used_tags = []  # список всех используемых тегов в html
+    used_css = {}  # словарь, хранящий весь значимый код css
+    flag = True  # true - смотрим селектор; false - смотрим блок
+    for elem in dict_tag_class:
+        all_used_tags.append(elem)
+        value = dict_tag_class[elem]
+        for cur_value in value:
+            if cur_value and cur_value not in all_used_classes:
+                all_used_classes.append(cur_value)
+    with open (file_path) as f:
+        for line in f:
+            if flag:
+                if (line.find("{")) != -1:
+                    cur_selector = line[:line.find("{")].strip()
+                    if cur_selector[0] == '.' and cur_selector[1:] in all_used_classes:
+                        code_block = line[line.find("{"):]
+                        if code_block.find('}') != -1:
+                            used_css[cur_selector] = code_block
+                        else:
+                            flag = False
+            else: 
+                if code_block.find('}') == -1:
+                    code_block += line
+                else:
+                    code_block += line
+                    flag = True
+    print (used_css)
 
 if __name__ == "__main__":
 
@@ -138,7 +164,7 @@ if __name__ == "__main__":
                 for css_doc in styles:
                     file_path, err_event = file_existence(css_doc)
                     if err_event is None:
-                        css_docs.append(css_work(file_path))
+                        css_docs.append(css_work(file_path, classes)) 
                     else:
                     # ошибка существования css файла
                         print(err_event)
