@@ -102,12 +102,11 @@ def css_work(file_path, dict_tag_class):
     """Вернуть словарь {название класса/ID: его содержимое CSS} """
 
     print(f'\nФайл CSS {file_path}')
+    all_used_tags = list(dict_tag_class.keys())  # список всех используемых тегов в html
     all_used_classes = []  # список всех используемых классов в html
-    all_used_tags = []  # список всех используемых тегов в html
     used_css = {}  # словарь, хранящий весь значимый код css
     flag = True  # true - смотрим селектор; false - смотрим блок
     for elem in dict_tag_class:
-        all_used_tags.append(elem)
         value = dict_tag_class[elem]
         for cur_value in value:
             if cur_value and cur_value not in all_used_classes:
@@ -124,12 +123,13 @@ def css_work(file_path, dict_tag_class):
                         else:
                             flag = False
             else: 
-                if code_block.find('}') == -1:
+                if line.find('}') == -1:
                     code_block += line
                 else:
                     code_block += line
+                    used_css[cur_selector] = code_block
                     flag = True
-    print (used_css)
+    print (f'Used_css: {used_css}')
 
 if __name__ == "__main__":
 
