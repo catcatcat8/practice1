@@ -76,7 +76,7 @@ def class_list(file_path, tags):
     return css_classes
 
 
-def css_styles():
+def css_styles(file_path):
     """Вернуть список путей подгружаемых локальных css документов"""
 
     err_event = None  # возвращаемый текст ошибки
@@ -99,6 +99,11 @@ def css_styles():
         err_event = "Нет ни одного локального стиля!"
     return styles, err_event
 
+def css_work(file_path):
+    """Вернуть словарь {название класса/ID: его содержимое CSS} """
+
+    print(f'Нашел файл CSS {file_path}')
+
 
 if __name__ == "__main__":
 
@@ -112,15 +117,13 @@ if __name__ == "__main__":
             print ("HTML tags:")
             [print(x.upper()) for x in tags]
             # --- Шаг 2
-            styles, err_event = css_styles()
+            styles, err_event = css_styles(file_path)
             if err_event is None:
                 # получен список локальных стилей
                 print ("Local CSS styles:")
                 [print(x) for x in styles]
                 # --- Шаг 3
                 classes = class_list(file_path, tags)
-                # список классов для каждого тега
-                print (classes)
                 # Формирование списка объектов класса
                 myobjects = []
                 for elem in classes:  # для каждого объекта словаря
@@ -129,6 +132,16 @@ if __name__ == "__main__":
                 # Вывод информации об объектах
                 for obj in myobjects:
                     obj.htmlobject_print()
+                # --- Шаг 4
+                # Обработка CSS документов
+                css_docs = []
+                for css_doc in styles:
+                    file_path, err_event = file_existence(css_doc)
+                    if err_event is None:
+                        css_docs.append(css_work(file_path))
+                    else:
+                    # ошибка существования css файла
+                        print(err_event)
             else:
             # ошибка формирования списка локальных стилей
                 print(err_event)
