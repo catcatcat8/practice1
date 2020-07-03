@@ -106,7 +106,7 @@ def css_work(file_path, dict_tag_class):
     all_used_classes = []  # список всех используемых классов в html
     used_css = {}  # словарь, хранящий весь значимый код css
     flag = True  # true - смотрим селектор; false - смотрим блок
-    for elem in dict_tag_class:
+    for elem in dict_tag_class: 
         value = dict_tag_class[elem]
         for cur_value in value:
             if cur_value and cur_value not in all_used_classes:
