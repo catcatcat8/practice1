@@ -1,5 +1,5 @@
 # Лебедев Евгений Получение оптимизационного файла (минимизация структуры подгружаемых каскадных таблиц в HTML)
-import os
+import os, re
 
 class Htmlobject:
     """Класс, описывающий объект HTML"""
@@ -121,12 +121,14 @@ def css_work(file_path, all_used_tags, all_used_classes):
             if flag:
                 if (line.find("{")) != -1:
                     cur_selector = line[:line.find("{")].strip()
-                    if cur_selector[0] == '.' and cur_selector[1:] in all_used_classes:
-                        code_block = line[line.find("{"):]
-                        if code_block.find('}') != -1:
-                            used_css[cur_selector] = code_block
-                        else:
-                            flag = False
+                    for cur_class in all_used_classes:
+                        reg_exp = '^.' + cur_class + '$'
+                        if re.match(reg_exp, cur_selector) is not None:
+                            code_block = line[line.find("{"):]
+                            if code_block.find('}') != -1:
+                                used_css[cur_selector] = code_block
+                            else:
+                                flag = False   
             else: 
                 if line.find('}') == -1:
                     code_block += line
