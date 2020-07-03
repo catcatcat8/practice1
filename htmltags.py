@@ -123,7 +123,7 @@ def css_work(file_path, all_used_tags, all_used_classes):
                 if (line.find("{")) != -1:
                     cur_selector = line[:line.find("{")].strip()
                     for cur_class in all_used_classes:  # проверяем селекторы классы
-                        reg_exp = '.' + cur_class + '($|:{1,2}|\.)'
+                        reg_exp = '.' + cur_class + r'($|:{1,2}.+$)'
                         if re.match(reg_exp, cur_selector) is not None:
                             flag_selector_found = True
                             code_block = line[line.find("{"):]
