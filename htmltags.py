@@ -98,19 +98,24 @@ def class_list(file_path, tags):
             css_classes[f'{tag}'] = class_list
     return css_classes
 
-def css_work(file_path, dict_tag_class):
-    """Вернуть словарь {название класса/ID: его содержимое CSS} """
+def all_used_css(dict_tag_class):
+    "Из словаря вернуть список тегов и список уникальных классов"
 
-    print(f'\nФайл CSS {file_path}')
     all_used_tags = list(dict_tag_class.keys())  # список всех используемых тегов в html
     all_used_classes = []  # список всех используемых классов в html
-    used_css = {}  # словарь, хранящий весь значимый код css
-    flag = True  # true - смотрим селектор; false - смотрим блок
     for elem in dict_tag_class: 
         value = dict_tag_class[elem]
         for cur_value in value:
             if cur_value and cur_value not in all_used_classes:
                 all_used_classes.append(cur_value)
+    return all_used_tags, all_used_classes
+
+def css_work(file_path, all_used_tags, all_used_classes):
+    """Вернуть словарь {название класса/ID: его содержимое CSS} """
+
+    print(f'\nФайл CSS {file_path}')
+    used_css = {}  # словарь, хранящий весь значимый код css
+    flag = True  # true - смотрим селектор; false - смотрим блок
     with open (file_path) as f:
         for line in f:
             if flag:
@@ -161,10 +166,11 @@ if __name__ == "__main__":
                 # --- Шаг 4
                 # Обработка CSS документов
                 css_docs = []
+                all_used_tags, all_used_classes = all_used_css(classes)
                 for css_doc in styles:
                     file_path, err_event = file_existence(css_doc)
                     if err_event is None:
-                        css_docs.append(css_work(file_path, classes)) 
+                        css_docs.append(css_work(file_path, all_used_tags, all_used_classes)) 
                     else:
                     # ошибка существования css файла
                         print(err_event)
