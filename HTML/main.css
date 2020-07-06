@@ -25,6 +25,10 @@ body, html {
 	font-family: Ubuntu-Regular, sans-serif;
 }
 
+#helloworld {
+  color: #666666;
+}
+
 /*---------------------------------------------*/
 a {
 	font-family: Ubuntu-Regular;

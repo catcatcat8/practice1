@@ -98,6 +98,21 @@ def class_list(file_path, tags):
             css_classes[f'{tag}'] = class_list
     return css_classes
 
+def id_list(file_path):
+    "Вернуть список идентификаторов"
+
+    css_ids = []
+    if file_path is not None:
+        with open (file_path) as f:
+            for line in f:
+                if line.find('id=') != -1:
+                    cur_id = line[line.find('id='):]
+                    cur_id = cur_id[cur_id.find('"')+1:]
+                    cur_id = cur_id[:cur_id.find('"')]
+                    if cur_id and cur_id not in css_ids:
+                        css_ids.append(cur_id)
+    return css_ids
+
 def all_used_css(dict_tag_class):
     "Из словаря вернуть список тегов и список уникальных классов"
 
@@ -110,7 +125,7 @@ def all_used_css(dict_tag_class):
                 all_used_classes.append(cur_value)
     return all_used_tags, all_used_classes
 
-def css_work(file_path, all_used_tags, all_used_classes):
+def css_work(file_path, all_used_tags, all_used_classes, all_used_ids):
     """Вернуть словарь {название класса/ID: его содержимое CSS} """
 
     print(f'\nФайл CSS {file_path}:')
@@ -131,6 +146,7 @@ def css_work(file_path, all_used_tags, all_used_classes):
                             flag_sel_block = False
                     if not flag_selector_found:  # если селектор еще не найден
                         for cur_class in all_used_classes:  # проверяем селекторы классы
+                            # регулярное выражение проверки класса
                             reg_exp = '\.' + cur_class + r'($|:{1,2}.+$| *\,.+$| *\..+$|\[.+$| *\~.+$| *>.+$| *\+.+$)'
                             if re.search(reg_exp, cur_selector) is not None:
                                 flag_selector_found = True
@@ -142,9 +158,10 @@ def css_work(file_path, all_used_tags, all_used_classes):
                                     flag_sel_block = False
                             if flag_selector_found:  # селектор найден, больше не просматриваем классы
                                 break
-                    if not flag_selector_found: # если классы не найдены - проверяем теги
+                    if not flag_selector_found:  # если классы не найдены - проверяем теги
                         for cur_tag in all_used_tags:
-                            reg_exp = '([^\w\.]|^)' + cur_tag + r'($|:{1,2}.+$| *\,.+$| ?\..+$|\[.+$| *\~.+$| *>.+$| *\+.+$)'
+                            # регулярное выражение проверки тега
+                            reg_exp = '([^\w\.]|^)' + cur_tag + r'($|:{1,2}.+$| *\,.+$| ?\..+$|\[.+$| *\~.+$| *>.+$| *\+.+$| +.+$)'
                             if re.search(reg_exp, cur_selector) is not None:
                                 flag_selector_found = True
                                 code_block = line[line.find("{"):]
@@ -155,6 +172,20 @@ def css_work(file_path, all_used_tags, all_used_classes):
                                     flag_sel_block = False
                             if flag_selector_found:  # селектор найден, больше не просматриваем теги
                                 break
+                    if not flag_selector_found:  # классы и теги не найдены - проверяем идентификаторы
+                        for cur_id in all_used_ids:
+                            # регулярное выражение проверки идентификатора
+                            reg_exp = '\#' + cur_id + r'($|:{1,2}.+$| *\,.+$|\[.+$| *\~.+$| *>.+$| *\+.+$| +.+$)'
+                            if re.search(reg_exp, cur_selector) is not None:
+                                flag_selector_found = True
+                                code_block = line[line.find("{"):]
+                                if code_block.find('}') != -1:
+                                    used_css[cur_selector] = code_block
+                                    flag_selector_found = False
+                                else:
+                                    flag_sel_block = False
+                            if flag_selector_found:  # селектор найден, больше не просматриваем идентификаторы
+                                break
             else: 
                 if line.find('}') == -1:
                     code_block += line
@@ -163,10 +194,10 @@ def css_work(file_path, all_used_tags, all_used_classes):
                     used_css[cur_selector] = code_block
                     flag_sel_block = True
                     flag_selector_found = False
-    for selector in used_css:
+    for selector in used_css:  # вывод нужных селекторов
         block = used_css[selector]
         print(f'{selector} {block}')
-    #print (f'Used_css: {used_css}')
+    return used_css
 
 if __name__ == "__main__":
 
@@ -187,6 +218,7 @@ if __name__ == "__main__":
                 [print(x) for x in styles]
                 # --- Шаг 3
                 classes = class_list(file_path, tags)
+                all_used_ids = id_list(file_path)
                 # Формирование списка объектов класса
                 myobjects = []
                 for elem in classes:  # для каждого объекта словаря
@@ -202,7 +234,7 @@ if __name__ == "__main__":
                 for css_doc in styles:
                     file_path, err_event = file_existence(css_doc)
                     if err_event is None:
-                        css_docs.append(css_work(file_path, all_used_tags, all_used_classes)) 
+                        css_docs.append(css_work(file_path, all_used_tags, all_used_classes, all_used_ids)) 
                     else:
                     # ошибка существования css файла
                         print(err_event)
