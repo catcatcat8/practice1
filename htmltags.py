@@ -147,7 +147,7 @@ def css_work(file_path, all_used_tags, all_used_classes, all_used_ids):
                     if not flag_selector_found:  # если селектор еще не найден
                         for cur_class in all_used_classes:  # проверяем селекторы классы
                             # регулярное выражение проверки класса
-                            reg_exp = '\.' + cur_class + r'($|:{1,2}.+$| *\,.+$| *\..+$|\[.+$| *\~.+$| *>.+$| *\+.+$)'
+                            reg_exp = r'\.' + cur_class + r'($|:{1,2}.+$| *\,.+$| *\..+$|\[.+$| *\~.+$| *>.+$| *\+.+$)'
                             if re.search(reg_exp, cur_selector) is not None:
                                 flag_selector_found = True
                                 code_block = line[line.find("{"):]
@@ -161,7 +161,7 @@ def css_work(file_path, all_used_tags, all_used_classes, all_used_ids):
                     if not flag_selector_found:  # если классы не найдены - проверяем теги
                         for cur_tag in all_used_tags:
                             # регулярное выражение проверки тега
-                            reg_exp = '([^\w\.]|^)' + cur_tag + r'($|:{1,2}.+$| *\,.+$| ?\..+$|\[.+$| *\~.+$| *>.+$| *\+.+$| +.+$)'
+                            reg_exp = r'([^\w\.]|^)' + cur_tag + r'($|:{1,2}.+$| *\,.+$| ?\..+$|\[.+$| *\~.+$| *>.+$| *\+.+$| +.+$)'
                             if re.search(reg_exp, cur_selector) is not None:
                                 flag_selector_found = True
                                 code_block = line[line.find("{"):]
@@ -175,7 +175,7 @@ def css_work(file_path, all_used_tags, all_used_classes, all_used_ids):
                     if not flag_selector_found:  # классы и теги не найдены - проверяем идентификаторы
                         for cur_id in all_used_ids:
                             # регулярное выражение проверки идентификатора
-                            reg_exp = '\#' + cur_id + r'($|:{1,2}.+$| *\,.+$|\[.+$| *\~.+$| *>.+$| *\+.+$| +.+$)'
+                            reg_exp = r'\#' + cur_id + r'($|:{1,2}.+$| *\,.+$|\[.+$| *\~.+$| *>.+$| *\+.+$| +.+$)'
                             if re.search(reg_exp, cur_selector) is not None:
                                 flag_selector_found = True
                                 code_block = line[line.find("{"):]
