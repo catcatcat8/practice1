@@ -249,7 +249,8 @@ def new_html(file_path, css_docs):
 
 if __name__ == "__main__":
 
-    _targetFile = "index.html"
+    listFiles = os.listdir("HTML")
+    # _targetFile = "index.html"
     file_path, err_event = file_existence(_targetFile)
     # --- Шаг 1
     if file_path is not None:
