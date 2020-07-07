@@ -206,12 +206,38 @@ def css_work(file_path, all_used_tags, all_used_classes, all_used_ids):
     return used_css
 
 def new_css(file_path, css_dictionary):
+    """Создает новые оптимизированные css файлы"""
+
     file_path = file_path[:file_path.rfind('\\')+1] + '_' + file_path[file_path.rfind('\\')+1:]
     css_file = open (file_path, 'w')
     for cur_selector in css_dictionary:
         cur_value = css_dictionary[cur_selector]
         css_file.write(cur_selector + ' ' + cur_value + '\n')
     css_file.close()
+    return None
+
+def new_html(file_path, css_docs):
+    """Создает новый html файл, меняет ссылки на локальные стили в нем"""
+
+    new_file_path = file_path[:file_path.rfind('\\')+1] + '_' + file_path[file_path.rfind('\\')+1:]
+    new_html_file = open (new_file_path, 'w')
+    with open(file_path) as f:
+        for line in f:
+            if line.find("href") == -1:
+                new_html_file.write(line)
+            else:
+                style_found = False
+                href = line[line.find("href"):]  # обрезаем содержимое href
+                href = href[href.find('"')+1:]
+                href = href[:href.find('"')]
+                for css_doc in css_docs:
+                    if href.find(css_doc) != -1:
+                        style_found = True
+                        new_line = line[:line.find(css_doc)] + '_' + line[line.find(css_doc):]
+                        new_html_file.write(new_line)
+                        break
+                if not style_found:
+                    new_html_file.write(line)
     return None
 
 if __name__ == "__main__":
@@ -259,8 +285,10 @@ if __name__ == "__main__":
                 for css_doc in styles:
                     file_path, err_event = file_existence(css_doc)
                     if err_event is None:
-                        new_css(file_path, css_docs[dict_num])
+                        new_css(file_path, css_docs[dict_num])  # создаются минимизированные файлы css
                     dict_num += 1
+                file_path, err_event = file_existence(_targetFile)
+                new_html(file_path, styles)  # создается новый html файл
             else:
             # ошибка формирования списка локальных стилей
                 print(err_event)
