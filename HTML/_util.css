@@ -1,0 +1,44 @@
+.fs-12 {font-size: 12px;}
+
+.p-t-10 {padding-top: 10px;}
+
+.p-b-90 {padding-bottom: 90px;}
+
+.m-t-17 {margin-top: 17px;}
+
+.m-b-10 {margin-bottom: 10px;}
+
+.m-b-16 {margin-bottom: 16px;}
+
+.m-b-20 {margin-bottom: 20px;}
+
+.m-l-10 {margin-left: 10px;}
+
+.flex-w {
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: -moz-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-flex-wrap: wrap;
+	-moz-flex-wrap: wrap;
+	-ms-flex-wrap: wrap;
+	-o-flex-wrap: wrap;
+	flex-wrap: wrap;
+}
+
+.flex-sb {
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: -moz-box;
+	display: -ms-flexbox;
+	display: flex;
+	justify-content: space-between;
+}
+
+.ab-b-l {
+	position: absolute;
+	left: 0px;
+	bottom: 0px;
+}
+

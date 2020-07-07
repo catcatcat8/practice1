@@ -135,10 +135,19 @@ def css_work(file_path, all_used_tags, all_used_classes, all_used_ids):
     with open (file_path) as f:
         for line in f:
             if flag_sel_block:
+                if (flag_selector_found) and (line.find('}') != -1):  # проверка на {{}} - вложенные селекторы
+                    code_block += line
                 if (line.find("{") != -1) and (line.find("/*") == -1):
                     cur_selector = line[:line.find("{")].strip()
                     flag_selector_found = False
-                    if cur_selector == '*':  # если селектор - "*"
+                    if cur_selector.find('@') != -1:  # если селектор - правило с '@'
+                        flag_selector_found = True
+                        code_block = line[line.find("{"):]
+                        if code_block.find('}') != -1:
+                            used_css[cur_selector] = code_block
+                        else:
+                            flag_sel_block = False
+                    if not flag_selector_found and cur_selector == '*':  # если селектор - "*"
                         flag_selector_found = True
                         code_block = line[line.find("{"):]
                         if code_block.find('}') != -1:
@@ -196,6 +205,15 @@ def css_work(file_path, all_used_tags, all_used_classes, all_used_ids):
         print(f'{selector} {block}')
     return used_css
 
+def new_css(file_path, css_dictionary):
+    file_path = file_path[:file_path.rfind('\\')+1] + '_' + file_path[file_path.rfind('\\')+1:]
+    css_file = open (file_path, 'w')
+    for cur_selector in css_dictionary:
+        cur_value = css_dictionary[cur_selector]
+        css_file.write(cur_selector + ' ' + cur_value + '\n')
+    css_file.close()
+    return None
+
 if __name__ == "__main__":
 
     _targetFile = "index.html"
@@ -235,6 +253,14 @@ if __name__ == "__main__":
                     else:
                     # ошибка существования css файла
                         print(err_event)
+                # --- Шаг 5
+                # Создание минимизированных файлов
+                dict_num = 0
+                for css_doc in styles:
+                    file_path, err_event = file_existence(css_doc)
+                    if err_event is None:
+                        new_css(file_path, css_docs[dict_num])
+                    dict_num += 1
             else:
             # ошибка формирования списка локальных стилей
                 print(err_event)
