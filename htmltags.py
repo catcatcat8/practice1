@@ -27,7 +27,7 @@ def file_existence(_targetFile):
             file_path = _tmp
             break
     if file_path is None:
-        err_event = "Файл отсутствует!"
+        err_event = f'Файл {_targetFile} отсутствует!'
     return file_path, err_event
 
 def html_tags(file_path):
@@ -77,28 +77,20 @@ def css_styles(file_path):
         err_event = "Нет ни одного локального стиля!"
     return styles, err_event
 
-def class_list(file_path, tags):
-    """Вернуть для каждого тега список классов"""
+def class_list(file_path):
+    """Вернуть список классов"""
 
-    css_classes = {}
-    if err_event is None:
-        for tag in tags:
-            class_list = []
-            with open (file_path) as f:
-                for line in f:
-                    if f'<{tag}' in line:
-                        pos1 = line.find(f'{tag}')
-                        line = line[pos1:]
-                        pos2 = line.find('>')
-                        cur_tag = line[:pos2]
-                        if 'class="' in cur_tag:
-                            cur_class = cur_tag[cur_tag.find('class="')+7:]
-                            cur_class = cur_class[:cur_class.find('"')]
-                            cur_classes = cur_class.split()
-                            for each_cur_class in cur_classes:
-                                if each_cur_class and each_cur_class not in class_list:
-                                    class_list.append(each_cur_class)
-            css_classes[f'{tag}'] = class_list
+    css_classes = []
+    with open (file_path) as f:
+        for line in f:
+            while line.find('class="') != -1:
+                cur_class = line[line.find('class="')+7:]
+                line = cur_class[cur_class.find('"')+1:]
+                cur_class = cur_class[:cur_class.find('"')]
+                cur_class = cur_class.split()
+                for each_class in cur_class:
+                    if each_class and each_class not in css_classes:
+                        css_classes.append(each_class)
     return css_classes
 
 def id_list(file_path):
@@ -115,18 +107,6 @@ def id_list(file_path):
                     if cur_id and cur_id not in css_ids:
                         css_ids.append(cur_id)
     return css_ids
-
-def all_used_css(dict_tag_class):
-    "Из словаря вернуть список тегов и список уникальных классов"
-
-    all_used_tags = list(dict_tag_class.keys())  # список всех используемых тегов в html
-    all_used_classes = []  # список всех используемых классов в html
-    for elem in dict_tag_class: 
-        value = dict_tag_class[elem]
-        for cur_value in value:
-            if cur_value and cur_value not in all_used_classes:
-                all_used_classes.append(cur_value)
-    return all_used_tags, all_used_classes
 
 def css_work(file_path, all_used_tags, all_used_classes, all_used_ids):
     """Вернуть словарь {название класса/ID: его содержимое CSS} """
@@ -249,37 +229,36 @@ def new_html(file_path, css_docs):
 
 if __name__ == "__main__":
 
-    listFiles = os.listdir("HTML")
-    # _targetFile = "index.html"
+    """ listFiles = os.listdir("HTML")
+    [x for x in listFiles if x.select(".")[:-1][0] in ["html", "htm"]]
+    html_files = only_html_files(listFiles) """
+    _targetFile = "index.html"
     file_path, err_event = file_existence(_targetFile)
     # --- Шаг 1
     if file_path is not None:
-        tags, err_event = html_tags(file_path)
+        all_used_tags, err_event = html_tags(file_path)
         if err_event is None:
             # получен список тегов
             print ("HTML tags:")
-            [print(x.upper()) for x in tags]
+            [print(x.upper()) for x in all_used_tags]
             # --- Шаг 2
             styles, err_event = css_styles(file_path)
             if err_event is None:
                 # получен список локальных стилей
-                print ("Local CSS styles:")
+                print ("\nLocal CSS styles:")
                 [print(x) for x in styles]
                 # --- Шаг 3
-                classes = class_list(file_path, tags)
+                all_used_classes = class_list(file_path)
+                # получен список используемых классов
+                print ("\nClass list:")
+                [print(x) for x in all_used_classes]
                 all_used_ids = id_list(file_path)
-                # Формирование списка объектов класса
-                myobjects = []
-                for elem in classes:  # для каждого объекта словаря
-                    value = classes[elem]
-                    myobjects.append(Htmlobject(elem, value))
-                # Вывод информации об объектах
-                for obj in myobjects:
-                    obj.htmlobject_print()
+                # получен список идентификаторов
+                print ("\nID list:")
+                [print(x) for x in all_used_ids]
                 # --- Шаг 4
                 # Обработка CSS документов
                 css_docs = []
-                all_used_tags, all_used_classes = all_used_css(classes)
                 for css_doc in styles:
                     file_path, err_event = file_existence(css_doc)
                     if err_event is None:
