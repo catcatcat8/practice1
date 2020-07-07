@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<title>ITMM Exam</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+	<link rel="icon" type="image/png" href="../images/icons/favicon.ico"/>
+	<link rel="stylesheet" type="text/css" href="../css/util.css">
+	<link rel="stylesheet" type="text/css" href="../css/main.css">
+	<link rel="stylesheet" type="text/css" href="../css/font-awesome.min.css">
+	<style>
+			body {
+				position: relative; 
+			}
+			#section_start {padding-top:50px;color: #fff; background-color: #fff;}
+		
+	</style>
+</head>
+<body data-spy="scroll" data-target=".navbar" data-offset="20" class="container" Ex-hash="{{BuferList[2]}}">
+	<div id="section_start" class="container-fluid">
+		<p class="input90 m-b-10 Ex-W" style="text-align: center;">Список вопросов для слушателя</p>
+		<span class="login100-form-title m-b-10">{{BuferList[0]}}</span>
+		<div class="input80 m-b-20">{{textR}}</div>{{_h}}
+	</div>
+	<div class="container result">
+		<div class="panel-group" id="accordion">
+			{% for item in cards %}
+			<div id="ques{{item[6]}}" class="panel panel-default" Ex-nq="{{item[5]}}">
+				<div class="panel-heading">
+					<h4 class="panel-title">
+					<a data-toggle="collapse" data-parent="#accordion" href="#collapse{{item[6]}}">ВОПРОС {{item[6]}}</a>
+					</h4>
+				</div>
+				<div id="collapse{{item[6]}}" class="panel-collapse collapse">
+					<div class="panel-body">
+						<p class="m-b-15 fs-15">{{item[0]}}</p>
+						{% for answer in item[7] %}
+						<div class="m-b-12">
+							<table border="0">
+									<tr style="cursor: pointer;" class="quesCard" Ex-na="{{answer}}">
+										<td><i class="fa fa-circle-o fa-2x m-r-10 answer-label" aria-hidden="true"></i></td>
+										<td><span class="fs-15">{{item[answer]}}</span></td>
+									</tr>
+								</table>
+						</div>
+						{% endfor %}
+					</div>
+				</div>
+			</div>
+			{% endfor %}
+			<!-- отправка ответа -->
+			<div class="container-login100-form-btn m-t-17">
+				<div id="sendresult" class="login100-form-btn" disabled>завершить зачёт<div>
+			</div>
+		</div> 
+	</div>
+
+	<div class="wrap-login100 p-t-10 p-b-90">
+		<div class="ab-b-l fs-12">{{copyright}}</div>
+	</div>
+	<script>
+		jQuery(document).ready(function() {
+			$("#collapse1").addClass("in")
+			$(".quesCard").click(function(e){
+				// Change the label of the selected answer
+				$(this).closest(".panel-default").find(".quesCard").removeAttr("data-selected")
+				$(this).attr("data-selected",1);
+				// Change the selection bar on the question clicked by the user
+				$(this).closest(".panel-body").find(".answer-label").removeClass("fa-check-circle-o").addClass("fa-circle-o");
+				$(this).find(".answer-label").removeClass("fa-circle-o").addClass("fa-check-circle-o");
+				$(this).closest(".panel-default").find(".panel-heading").attr("data-isanswered", 1);
+				if($(".panel-group").find(".panel-heading:not([data-isanswered])").length == 0)
+				$("#sendresult").removeAttr("disabled");
+				});
+			$('#sendresult').click(function()
+				{
+				 if(!$(this).is('[disabled]'))
+					{
+						let result='';
+						let hashresponse=$("body").attr('Ex-hash');
+						$('.container .panel-group .panel-default').each(function()
+						{
+							result+=$(this).attr('Ex-nq')+':'+$(this).find('.quesCard[data-selected]').attr('Ex-na')+',';
+						}
+						);
+						$("#section_start").find(".Ex-W").addClass("CloseNotView");
+						$.post("result", {'res':result, 'hash':hashresponse}, 
+							function(data) {$(".result" ).html(data);}
+						);
+
+					}
+				}
+			);
+		});
+	</script>
+</body>
+</html>

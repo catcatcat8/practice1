@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+  .graf {
+    width: 100%;
+    align-self:center;
+    border: 1px solid rgb(201, 201, 201);
+    /* padding: 15px 15px 15px 15px; */
+    margin: auto;
+    font-family: sans-serif, Geneva, Tahoma, Verdana;
+  }
+
+</style>
+ <head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+</head>
+   
+<body>
+  <h3>Pesonal page</h3>
+  <div>Browser fingerprinting:
+    	<ul>
+          {% for value in BuferList %}
+              <li>
+                <ul>{{value}}</ul>
+              </li>
+          {% endfor %}
+          </ul>
+  </div>
+</body>
