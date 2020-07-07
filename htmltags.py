@@ -170,7 +170,7 @@ def css_work(file_path, all_used_tags, all_used_classes, all_used_ids):
                                     flag_sel_block = False
                             if flag_selector_found:  # селектор найден, больше не просматриваем классы
                                 break
-                    if not flag_selector_found:  # если классы не найдены - проверяем теги
+                    # if not flag_selector_found:  # если классы не найдены - проверяем теги
                         for cur_tag in all_used_tags:
                             # регулярное выражение проверки тега
                             reg_exp = r'([^\w\.]|^)' + cur_tag + r'($|:{1,2}.+$| *\,.+$| ?\..+$|\[.+$| *\~.+$| *>.+$| *\+.+$| +.+$)'
@@ -183,7 +183,7 @@ def css_work(file_path, all_used_tags, all_used_classes, all_used_ids):
                                     flag_sel_block = False
                             if flag_selector_found:  # селектор найден, больше не просматриваем теги
                                 break
-                    if not flag_selector_found:  # классы и теги не найдены - проверяем идентификаторы
+                    # if not flag_selector_found:  # классы и теги не найдены - проверяем идентификаторы
                         for cur_id in all_used_ids:
                             # регулярное выражение проверки идентификатора
                             reg_exp = r'\#' + cur_id + r'($|:{1,2}.+$| *\,.+$|\[.+$| *\~.+$| *>.+$| *\+.+$| +.+$)'
