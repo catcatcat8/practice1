@@ -84,22 +84,20 @@ reg_exp = `'\#' + cur_id + r'($|:{1,2}.+$| *\,.+$|\[.+$| *\~.+$| *>.+$| *\+.+$| 
 #### Описание алгоритма разбора выражения проверки селектора:
 Алгоритм не допускает вхождение буквы или точки, если тег находится не в начале селектора; после тега/класса/идентификатора возможна одна из следующих комбинаций: конец строки; ':' или '::' (описание псевдокласса); запятая для перечисления следующих тегов/классов; точка для описания вложенности элементов (недоступная для идентификаторов); \[attribute] для описания селектора атрибута; знак ~ для описания одноуровневых элементов; знак '>' для описания дочерних элементов; знак + для описания смежных селекторов. Комбинация завершается концом строки. В случае вхождения хотя бы одного используемого тега/класса/идентификатора, проверка считается успешной и возвращается True, иначе - False.
 #### Тестирование проверки селекторов:
-Селектор | Используемые теги/классы/id в HTML |	Ожидаемый результат |	Полученный результат
-:---: | :---: | :---: | :---:
-h1 |	h1 |	True |	True
-h1, h2, h3, h4, h5, h6 |	h1, h2, h6 |	True |	True
-div |	- |	False |	False
-a:hover |	a |	True | True
-.class1 |	class1 | True | True
-class2.class1 | class1, class2 | False | False
-.class2.class1 | class1, class2 | True | True
-#id1 | id1 | True |	True
-li a | a | True | True
-.class2::pseudo2 | class2 | True |	True
-.x + .y |	x, y | True | True
-.x > .y |	x, y | True |	True
-:lang(en) .custom-file-input ~ .custom-file-label::after | custom-file-label | True | True
-.navbar-nav.mainUser > li.nav-item .nav-link:hover | .nav-link | True |	True
-main .WndRegist .WndPanel .WellItem[data-isactive="1"] | WellItem |	True | True
-
-
+|     Используемые   теги/классы/id в HTML    |                             Селектор                            |     Ожидаемый   результат    |     Полученный   результат    |
+|:-------------------------------------------:|:---------------------------------------------------------------:|:----------------------------:|:-----------------------------:|
+|                      h1                     |                                h1                               |              True            |              True             |
+|                  h1, h2, h6                 |                      h1, h2, h3, h4, h5, h6                     |              True            |              True             |
+|                     body                    |                                div                              |             False            |              False            |
+|                       a                     |                              a:hover                            |              True            |              True             |
+|                    class1                   |                              .class1                            |              True            |              True             |
+|                class1, class2               |                           class2.class1                         |             False            |              False            |
+|                class1, class2               |                          .class2.class1                         |              True            |              True             |
+|                      id1                    |                               #id1                              |              True            |              True             |
+|                       a                     |                               li a                              |              True            |              True             |
+|                    class2                   |                          class2::pseudo2                        |              True            |              True             |
+|                     x, y                    |                               x + y                             |              True            |              True             |
+|                     x, y                    |                               x > y                             |              True            |              True             |
+|               custom-file-label             |     :lang(en) .custom-file-input ~ .custom-file-label::after    |              True            |              True             |
+|                   .nav-link                 |        .navbar-nav.mainUser > li.nav-item .nav-link:hover       |              True            |              True             |
+|                   WellItem                  |     main .WndRegist .WndPanel   .WellItem[data-isactive="1"]    |              True            |              True             |
