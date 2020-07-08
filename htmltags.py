@@ -27,7 +27,7 @@ def file_existence(_targetFile):
             file_path = _tmp
             break
     if file_path is None:
-        err_event = f'Файл {_targetFile} отсутствует!'
+        err_event = f'Файл "{_targetFile}" отсутствует!'
     return file_path, err_event
 
 def html_tags(file_path):
@@ -36,7 +36,7 @@ def html_tags(file_path):
     err_event = None  # возвращаемый текст ошибки
     tags = []  # возвращаемый список переменных
     if file_path is not None:
-        with open (file_path) as f:
+        with open (file_path, encoding="utf8") as f:
             for line in f:
                 while (line.find('<') != -1):
                     line = line[line.find('<'):]
@@ -57,7 +57,7 @@ def css_styles(file_path):
     err_event = None  # возвращаемый текст ошибки
     styles = []  # возвращаемый список стилей
     if file_path is not None:
-        with open (file_path) as f:
+        with open (file_path, encoding="utf8") as f:
             for line in f:
                 link_split = line.split()
                 if link_split:
@@ -81,7 +81,7 @@ def class_list(file_path):
     """Вернуть список классов"""
 
     css_classes = []
-    with open (file_path) as f:
+    with open (file_path, encoding="utf8") as f:
         for line in f:
             while line.find('class="') != -1:
                 cur_class = line[line.find('class="')+7:]
@@ -98,7 +98,7 @@ def id_list(file_path):
 
     css_ids = []
     if file_path is not None:
-        with open (file_path) as f:
+        with open (file_path, encoding="utf8") as f:
             for line in f:
                 if line.find('id=') != -1:
                     cur_id = line[line.find('id='):]
@@ -115,7 +115,7 @@ def css_work(file_path, all_used_tags, all_used_classes, all_used_ids):
     used_css = {}  # словарь, хранящий весь значимый код css
     flag_sel_block = True  # true - смотрим селектор; false - смотрим блок
     flag_selector_found = False  # true - найден селектор; false - не найден
-    with open (file_path) as f:
+    with open (file_path, encoding="utf8") as f:
         for line in f:
             if flag_sel_block:
                 if (flag_selector_found) and (line.find('}') != -1):  # проверка на {{}} - вложенные селекторы
@@ -229,59 +229,72 @@ def new_html(file_path, css_docs):
 
 if __name__ == "__main__":
 
-    """ listFiles = os.listdir("HTML")
-    [x for x in listFiles if x.select(".")[:-1][0] in ["html", "htm"]]
-    html_files = only_html_files(listFiles) """
-    _targetFile = "index.html"
-    file_path, err_event = file_existence(_targetFile)
-    # --- Шаг 1
-    if file_path is not None:
+    listFiles = os.listdir("HTML")
+    all_html_docs = ([x for x in listFiles if x.split(".")[-1] in ["html", "htm"]])
+    """_targetFile = "index.html"
+    file_path, err_event = file_existence(_targetFile) """
+    all_tags = []
+    all_styles = []
+    all_classes = []
+    all_ids = []
+    for each_html_doc in all_html_docs:
+        all_used_tags = []
+        styles = []
+        all_used_classes = []
+        all_used_ids = []
+        file_path, err_event = file_existence(each_html_doc)  # получаем путь до html док-та
+        # --- Шаг 1
+        # Получение списка тегов из всех html документов
         all_used_tags, err_event = html_tags(file_path)
+        for each_tag in all_used_tags:
+            if each_tag and each_tag not in all_tags:
+                all_tags.append(each_tag)
+        # --- Шаг 2
+        # Получение списка всех подгружаемых каскадных таблиц
+        styles, err_event = css_styles(file_path)
+        for each_style in styles:
+            if each_style and each_style not in all_styles:
+                all_styles.append(each_style)
+        # --- Шаг 3
+        # Получение списка классов и идентификаторов
+        all_used_classes = class_list(file_path)  # список классов
+        for each_class in all_used_classes:
+            if each_class and each_class not in all_classes:
+                all_classes.append(each_class)
+        all_used_ids = id_list(file_path)  # список идентификаторов
+        for each_id in all_used_ids:
+            if each_id and each_id not in all_ids:
+                all_ids.append(each_id)
+    # получен список тегов
+    print ("HTML tags:")
+    [print(x.upper()) for x in all_tags]
+    # получен список локальных стилей
+    print ("\nLocal CSS styles:")
+    [print(x) for x in all_styles]
+    # получен список используемых классов
+    print ("\nClass list:")
+    [print(x) for x in all_classes]
+    # получен список идентификаторов
+    print ("\nID list:")
+    [print(x) for x in all_ids]
+    # --- Шаг 4
+    # Обработка CSS документов
+    css_docs = []
+    for css_doc in all_styles:
+        file_path, err_event = file_existence(css_doc)
         if err_event is None:
-            # получен список тегов
-            print ("HTML tags:")
-            [print(x.upper()) for x in all_used_tags]
-            # --- Шаг 2
-            styles, err_event = css_styles(file_path)
-            if err_event is None:
-                # получен список локальных стилей
-                print ("\nLocal CSS styles:")
-                [print(x) for x in styles]
-                # --- Шаг 3
-                all_used_classes = class_list(file_path)
-                # получен список используемых классов
-                print ("\nClass list:")
-                [print(x) for x in all_used_classes]
-                all_used_ids = id_list(file_path)
-                # получен список идентификаторов
-                print ("\nID list:")
-                [print(x) for x in all_used_ids]
-                # --- Шаг 4
-                # Обработка CSS документов
-                css_docs = []
-                for css_doc in styles:
-                    file_path, err_event = file_existence(css_doc)
-                    if err_event is None:
-                        css_docs.append(css_work(file_path, all_used_tags, all_used_classes, all_used_ids)) 
-                    else:
-                    # ошибка существования css файла
-                        print(err_event)
-                # --- Шаг 5
-                # Создание минимизированных файлов
-                dict_num = 0
-                for css_doc in styles:
-                    file_path, err_event = file_existence(css_doc)
-                    if err_event is None:
-                        new_css(file_path, css_docs[dict_num])  # создаются минимизированные файлы css
-                    dict_num += 1
-                file_path, err_event = file_existence(_targetFile)
-                new_html(file_path, styles)  # создается новый html файл
-            else:
-            # ошибка формирования списка локальных стилей
-                print(err_event)
+            css_docs.append(css_work(file_path, all_tags, all_classes, all_ids)) 
         else:
-        # ошибка формирования списка html тегов
+        # ошибка существования css файла
             print(err_event)
-    else:
-        # ошибка существования файла
-        print(err_event)
+    # --- Шаг 5
+    # Создание минимизированных файлов
+    dict_num = 0
+    for css_doc in all_styles:
+        file_path, err_event = file_existence(css_doc)
+        if err_event is None:
+            new_css(file_path, css_docs[dict_num])  # создаются минимизированные файлы css
+        dict_num += 1
+    for each_html_doc in all_html_docs:
+        file_path, err_event = file_existence(each_html_doc)
+        new_html(file_path, all_styles)  # создается новый html файл
