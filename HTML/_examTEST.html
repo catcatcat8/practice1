@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<title>ITMM Exam</title>
+</head>
+<body>
+	<p>hash="{{BuferList[2]}}"</p>
+	{% for item in cards %}
+	<p>href={{item[6]}}</p>
+	{% endfor %}
+
+	<p>Список вопросов для слушателя {{BuferList[0]}}</p>
+
+	{% for item in cards %}
+		<p>id="ques{{item[6]}}" nq="{{item[5]}}"
+		   href="#collapse{{item[6]}}">ВОПРОС {{item[6]}} >> {{item[0]}}</p>
+	{% endfor %}
+
+
+	<p>copyright {{copyright}}</p>
+</body>
+</html>

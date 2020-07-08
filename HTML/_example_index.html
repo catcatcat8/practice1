@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+  .graf {
+    width: 100%;
+    align-self:center;
+    border: 1px solid rgb(201, 201, 201);
+    /* padding: 15px 15px 15px 15px; */
+    margin: auto;
+    font-family: sans-serif, Geneva, Tahoma, Verdana;
+  }
+
+</style>
+ <head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+</head>
+   
+<body>
+  <h3>Exams server - IT management mastery</h3>
+  <div>Browser fingerprinting:
+    <table border="1">
+      <tr><td>IP</td><td>{{element.ip}}</td></tr>
+      <tr><td>OS</td><td>{{element.os}} {{element.os_x}} {{element.os_bit}}</td></tr>
+      <tr><td>Browser</td><td>{{element.browser}}</td></tr>
+    </table>
+    <div id='Main'></div>
+  </div>
+  <!-- <span>Введите код авторизации</span><br>
+  <input type="text" id="aCode"><br>
+  <a href="#" id="autoriz" class="input">Авторизация</a> -->
+
+  <form name="test" method="post" action="exams"> 
+    <p><b>Ваше имя:</b><br>
+      <input type="text" size="40" name='fio'>
+    </p>
+    <p><b>Каким браузером в основном пользуетесь:</b><Br>
+      <input type="radio" name="browser" value="ie"> Internet Explorer<Br>
+      <input type="radio" name="browser" value="opera"> Opera<Br>
+      <input type="radio" name="browser" value="firefox"> Firefox<Br>
+    </p>
+    <p>Комментарий<Br>
+      <textarea name="comment" cols="40" rows="3"></textarea></p>
+    <p><input type="submit" value="Отправить">
+      <input type="reset" value="Очистить"></p>
+   </form>
+
+  <br><span style="font-size:70%;">(код пробной авторизации - "<b>Q2014test</b>")</span>
+  <div class="Adv Title" style="font-size:80%;">Телефон поддержки: <b>+7 (499) 649-25-59 #3333</b> / Skype: <a href="callto:daily-help.com">daily-help.com</a> <b>#3333</b></div>
+  <!-- <script>
+    // дозапрос данных
+    jQuery(document).ready(function()
+      {
+        $(".input").on("click",function(){
+          //$("body").empty().append($("<div id='Test'></div><div id='Main'></div>"))
+          //alert( $("#Main").load(`/exams?${$("#aCode").val()}`));
+          $("#Main").load(`/exams?${$("#aCode").val()}`);
+          });
+      });
+  </script> -->
+  <!--
+    $("body").empty().append($("<div id='Test'></div><div id='Main'></div>"))
+  -->
+</body>

@@ -38,7 +38,7 @@ def html_tags(file_path):
     if file_path is not None:
         with open (file_path, encoding="utf8") as f:
             for line in f:
-                while (line.find('<') != -1):
+                while (line.find('<') != -1) and (line.find('<!--') == -1):
                     line = line[line.find('<'):]
                     split_lines = line.split()
                     first_tag = split_lines[0].split('>')
@@ -83,7 +83,7 @@ def class_list(file_path):
     css_classes = []
     with open (file_path, encoding="utf8") as f:
         for line in f:
-            while line.find('class="') != -1:
+            while (line.find('class="') != -1) and (line.find('<!--') == -1):
                 cur_class = line[line.find('class="')+7:]
                 line = cur_class[cur_class.find('"')+1:]
                 cur_class = cur_class[:cur_class.find('"')]
@@ -100,8 +100,8 @@ def id_list(file_path):
     if file_path is not None:
         with open (file_path, encoding="utf8") as f:
             for line in f:
-                if line.find('id=') != -1:
-                    cur_id = line[line.find('id='):]
+                if (line.find('id="') != -1) and (line.find('<!--') == -1):
+                    cur_id = line[line.find('id="'):]
                     cur_id = cur_id[cur_id.find('"')+1:]
                     cur_id = cur_id[:cur_id.find('"')]
                     if cur_id and cur_id not in css_ids:
@@ -111,7 +111,7 @@ def id_list(file_path):
 def css_work(file_path, all_used_tags, all_used_classes, all_used_ids):
     """Вернуть словарь {название класса/ID: его содержимое CSS} """
 
-    print(f'\nФайл CSS {file_path}:')
+    print(f'Обработан файл CSS {file_path}:')
     used_css = {}  # словарь, хранящий весь значимый код css
     flag_sel_block = True  # true - смотрим селектор; false - смотрим блок
     flag_selector_found = False  # true - найден селектор; false - не найден
@@ -187,16 +187,16 @@ def css_work(file_path, all_used_tags, all_used_classes, all_used_ids):
                     code_block += line
                     used_css[cur_selector] = code_block
                     flag_sel_block = True
-    for selector in used_css:  # вывод нужных селекторов
+    """for selector in used_css:  # вывод нужных селекторов
         block = used_css[selector]
-        print(f'{selector} {block}')
+        print(f'{selector} {block}') """
     return used_css
 
 def new_css(file_path, css_dictionary):
     """Создает новые оптимизированные css файлы"""
 
     file_path = file_path[:file_path.rfind('\\')+1] + '_' + file_path[file_path.rfind('\\')+1:]
-    css_file = open (file_path, 'w')
+    css_file = open (file_path, 'w', encoding="utf8")
     for cur_selector in css_dictionary:
         cur_value = css_dictionary[cur_selector]
         css_file.write(cur_selector + ' ' + cur_value + '\n')
@@ -208,7 +208,7 @@ def new_html(file_path, css_docs):
 
     new_file_path = file_path[:file_path.rfind('\\')+1] + '_' + file_path[file_path.rfind('\\')+1:]
     new_html_file = open (new_file_path, 'w')
-    with open(file_path) as f:
+    with open(file_path, encoding="utf8") as f:
         for line in f:
             if line.find("href") == -1:
                 new_html_file.write(line)
@@ -230,7 +230,7 @@ def new_html(file_path, css_docs):
 if __name__ == "__main__":
 
     listFiles = os.listdir("HTML")
-    all_html_docs = ([x for x in listFiles if x.split(".")[-1] in ["html", "htm"]])
+    all_html_docs = ([x for x in listFiles if (x.split(".")[-1] in ["html", "htm"] and x.split(".")[-2][0] not in ["_"])])
     """_targetFile = "index.html"
     file_path, err_event = file_existence(_targetFile) """
     all_tags = []
@@ -294,7 +294,7 @@ if __name__ == "__main__":
         file_path, err_event = file_existence(css_doc)
         if err_event is None:
             new_css(file_path, css_docs[dict_num])  # создаются минимизированные файлы css
-        dict_num += 1
+            dict_num += 1
     for each_html_doc in all_html_docs:
         file_path, err_event = file_existence(each_html_doc)
         new_html(file_path, all_styles)  # создается новый html файл
