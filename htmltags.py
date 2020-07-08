@@ -1,5 +1,6 @@
 # Лебедев Евгений Получение оптимизационного файла (минимизация структуры подгружаемых каскадных таблиц в HTML)
-import os, re
+import os, re, chardet
+from chardet.universaldetector import UniversalDetector
 
 class Htmlobject:
     """Класс, описывающий объект HTML"""
@@ -30,13 +31,26 @@ def file_existence(_targetFile):
         err_event = f'Файл "{_targetFile}" отсутствует!'
     return file_path, err_event
 
-def html_tags(file_path):
+def encoding(file_path):
+    """Вернуть кодировку файла"""
+
+    detector = UniversalDetector()
+    with open(file_path, 'rb') as f:
+        for line in f:
+            detector.feed(line)
+            if detector.done:
+                break
+        detector.close()
+    cur_file_enc = detector.result['encoding']
+    return cur_file_enc
+
+def html_tags(file_path, cur_file_enc):
     """Вернуть список тегов"""
 
     err_event = None  # возвращаемый текст ошибки
     tags = []  # возвращаемый список переменных
     if file_path is not None:
-        with open (file_path, encoding="utf8") as f:
+        with open (file_path, encoding=f'{cur_file_enc}') as f:
             for line in f:
                 while (line.find('<') != -1) and (line.find('<!--') == -1):
                     line = line[line.find('<'):]
@@ -51,13 +65,13 @@ def html_tags(file_path):
         err_event = "Нет ни одного тега html!"
     return tags, err_event
 
-def css_styles(file_path):
+def css_styles(file_path, cur_file_enc):
     """Вернуть список путей подгружаемых локальных css документов"""
 
     err_event = None  # возвращаемый текст ошибки
     styles = []  # возвращаемый список стилей
     if file_path is not None:
-        with open (file_path, encoding="utf8") as f:
+        with open (file_path, encoding=f'{cur_file_enc}') as f:
             for line in f:
                 link_split = line.split()
                 if link_split:
@@ -77,11 +91,11 @@ def css_styles(file_path):
         err_event = "Нет ни одного локального стиля!"
     return styles, err_event
 
-def class_list(file_path):
+def class_list(file_path, cur_file_enc):
     """Вернуть список классов"""
 
     css_classes = []
-    with open (file_path, encoding="utf8") as f:
+    with open (file_path, encoding=f'{cur_file_enc}') as f:
         for line in f:
             while (line.find('class="') != -1) and (line.find('<!--') == -1):
                 cur_class = line[line.find('class="')+7:]
@@ -93,12 +107,12 @@ def class_list(file_path):
                         css_classes.append(each_class)
     return css_classes
 
-def id_list(file_path):
+def id_list(file_path, cur_file_enc):
     "Вернуть список идентификаторов"
 
     css_ids = []
     if file_path is not None:
-        with open (file_path, encoding="utf8") as f:
+        with open (file_path, encoding=f'{cur_file_enc}') as f:
             for line in f:
                 if (line.find('id="') != -1) and (line.find('<!--') == -1):
                     cur_id = line[line.find('id="'):]
@@ -108,7 +122,7 @@ def id_list(file_path):
                         css_ids.append(cur_id)
     return css_ids
 
-def css_work(file_path, all_used_tags, all_used_classes, all_used_ids):
+def css_work(file_path, cur_file_enc, all_used_tags, all_used_classes, all_used_ids):
     """Вернуть словарь {название класса/ID: его содержимое CSS} """
 
     print(f'Обработан файл CSS {file_path}:')
@@ -192,23 +206,23 @@ def css_work(file_path, all_used_tags, all_used_classes, all_used_ids):
         print(f'{selector} {block}') """
     return used_css
 
-def new_css(file_path, css_dictionary):
+def new_css(file_path, cur_file_enc, css_dictionary):
     """Создает новые оптимизированные css файлы"""
 
     file_path = file_path[:file_path.rfind('\\')+1] + '_' + file_path[file_path.rfind('\\')+1:]
-    css_file = open (file_path, 'w', encoding="utf8")
+    css_file = open (file_path, 'w', encoding=f'{cur_file_enc}')
     for cur_selector in css_dictionary:
         cur_value = css_dictionary[cur_selector]
         css_file.write(cur_selector + ' ' + cur_value + '\n')
     css_file.close()
     return None
 
-def new_html(file_path, css_docs):
+def new_html(file_path, cur_file_enc, css_docs):
     """Создает новый html файл, меняет ссылки на локальные стили в нем"""
 
     new_file_path = file_path[:file_path.rfind('\\')+1] + '_' + file_path[file_path.rfind('\\')+1:]
-    new_html_file = open (new_file_path, 'w')
-    with open(file_path, encoding="utf8") as f:
+    new_html_file = open (new_file_path, 'w', encoding=f'{cur_file_enc}')
+    with open(file_path, encoding=f'{cur_file_enc}') as f:
         for line in f:
             if line.find("href") == -1:
                 new_html_file.write(line)
@@ -243,25 +257,26 @@ if __name__ == "__main__":
         all_used_classes = []
         all_used_ids = []
         file_path, err_event = file_existence(each_html_doc)  # получаем путь до html док-та
+        cur_file_enc = encoding(file_path)  # определяем кодировку файла
         # --- Шаг 1
         # Получение списка тегов из всех html документов
-        all_used_tags, err_event = html_tags(file_path)
+        all_used_tags, err_event = html_tags(file_path, cur_file_enc)
         for each_tag in all_used_tags:
             if each_tag and each_tag not in all_tags:
                 all_tags.append(each_tag)
         # --- Шаг 2
         # Получение списка всех подгружаемых каскадных таблиц
-        styles, err_event = css_styles(file_path)
+        styles, err_event = css_styles(file_path, cur_file_enc)
         for each_style in styles:
             if each_style and each_style not in all_styles:
                 all_styles.append(each_style)
         # --- Шаг 3
         # Получение списка классов и идентификаторов
-        all_used_classes = class_list(file_path)  # список классов
+        all_used_classes = class_list(file_path, cur_file_enc)  # список классов
         for each_class in all_used_classes:
             if each_class and each_class not in all_classes:
                 all_classes.append(each_class)
-        all_used_ids = id_list(file_path)  # список идентификаторов
+        all_used_ids = id_list(file_path, cur_file_enc)  # список идентификаторов
         for each_id in all_used_ids:
             if each_id and each_id not in all_ids:
                 all_ids.append(each_id)
@@ -283,7 +298,8 @@ if __name__ == "__main__":
     for css_doc in all_styles:
         file_path, err_event = file_existence(css_doc)
         if err_event is None:
-            css_docs.append(css_work(file_path, all_tags, all_classes, all_ids)) 
+            cur_file_enc = encoding(file_path)
+            css_docs.append(css_work(file_path, cur_file_enc, all_tags, all_classes, all_ids)) 
         else:
         # ошибка существования css файла
             print(err_event)
@@ -293,8 +309,10 @@ if __name__ == "__main__":
     for css_doc in all_styles:
         file_path, err_event = file_existence(css_doc)
         if err_event is None:
-            new_css(file_path, css_docs[dict_num])  # создаются минимизированные файлы css
+            cur_file_enc = encoding(file_path)
+            new_css(file_path, cur_file_enc, css_docs[dict_num])  # создаются минимизированные файлы css
             dict_num += 1
     for each_html_doc in all_html_docs:
         file_path, err_event = file_existence(each_html_doc)
-        new_html(file_path, all_styles)  # создается новый html файл
+        cur_file_enc = encoding(file_path)
+        new_html(file_path, cur_file_enc, all_styles)  # создается новый html файл
