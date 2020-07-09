@@ -101,8 +101,11 @@ def class_list(file_path, cur_file_enc):
                 cur_class = line[line.find('class="')+7:]
                 line = cur_class[cur_class.find('"')+1:]
                 cur_class = cur_class[:cur_class.find('"')]
-                while (cur_class.find('{%') != -1):  # обработка вложенного javascript
-                    cur_class = cur_class[:cur_class.find('{')] + cur_class[cur_class.find('}')+1:]
+                while (cur_class.find('{') != -1):  # обработка вложенного javascript
+                    if (cur_class.rfind('{') > cur_class.find('}')):
+                        cur_class = cur_class[:cur_class.find('{')] + cur_class[cur_class.find('}')+1:]
+                    else:
+                        cur_class = cur_class[:cur_class.rfind('{')] + cur_class[cur_class.find('}')+1:]
                 cur_class = cur_class.split()
                 for each_class in cur_class:
                     if each_class and each_class not in css_classes:
@@ -203,9 +206,6 @@ def css_work(file_path, cur_file_enc, all_used_tags, all_used_classes, all_used_
                     code_block += line
                     used_css[cur_selector] = code_block
                     flag_sel_block = True
-    """for selector in used_css:  # вывод нужных селекторов
-        block = used_css[selector]
-        print(f'{selector} {block}') """
     return used_css
 
 def new_css(file_path, cur_file_enc, css_dictionary):
