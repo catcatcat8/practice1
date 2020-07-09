@@ -62,7 +62,7 @@ def html_tags(file_path, cur_file_enc):
                         tags.append(tag[1:])
                     line = line[line.find(f'{tag}')+len(tag)+1:]
     if not tags:
-        err_event = "Нет ни одного тега html!"
+        err_event = f'В файле {file_path} нет ни одного тега html!'
     return tags, err_event
 
 def css_styles(file_path, cur_file_enc):
@@ -88,7 +88,7 @@ def css_styles(file_path, cur_file_enc):
                         else:
                             styles.append(link[pos:-2])
     if not styles:
-        err_event = "Нет ни одного локального стиля!"
+        err_event = f'В файле {file_path} нет ни одного локального стиля!'
     return styles, err_event
 
 def class_list(file_path, cur_file_enc):
