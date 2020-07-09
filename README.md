@@ -95,20 +95,22 @@ reg_exp = `'\#' + cur_id + r'($|:{1,2}.+$| *\,.+$|\[.+$| *\~.+$| *>.+$| *\+.+$| 
 |     Используемые   теги/классы/id в HTML    |                             Селектор                            |     Ожидаемый   результат    |     Полученный   результат    |
 |:-------------------------------------------:|:---------------------------------------------------------------:|:----------------------------:|:-----------------------------:|
 |                      h1                     |                                h1                               |              True            |              True             |
+|                      -                      |                            @font-face                           |              True            |              True             |
+|                      -                      |                                 *                               |              True            |              True             |
 |                  h1, h2, h6                 |                      h1, h2, h3, h4, h5, h6                     |              True            |              True             |
 |                     body                    |                                div                              |             False            |              False            |
 |                       a                     |                              a:hover                            |              True            |              True             |
 |                    class1                   |                              .class1                            |              True            |              True             |
-|                class1, class2               |                           class2.class1                         |             False            |              False            |
+|                class1, class2               |                             .class666                           |             False            |              False            |
 |                class1, class2               |                          .class2.class1                         |              True            |              True             |
 |                      id1                    |                               #id1                              |              True            |              True             |
 |                       a                     |                               li a                              |              True            |              True             |
-|                    class2                   |                          class2::pseudo2                        |              True            |              True             |
-|                     x, y                    |                               x + y                             |              True            |              True             |
-|                     x, y                    |                               x > y                             |              True            |              True             |
+|                    class2                   |                         .class2::pseudo2                        |              True            |              True             |
+|                     x, y                    |                             .x + .y                             |              True            |              True             |
+|                     x, y                    |                             .x > .y                             |              True            |              True             |
 |               custom-file-label             |     :lang(en) .custom-file-input ~ .custom-file-label::after    |              True            |              True             |
-|                   .nav-link                 |        .navbar-nav.mainUser > li.nav-item .nav-link:hover       |              True            |              True             |
-|                   WellItem                  |     main .WndRegist .WndPanel   .WellItem[data-isactive="1"]    |              True            |              True             |
+|                   nav-link                  |        .navbar-nav.mainUser > li.nav-item .nav-link:hover       |              True            |              True             |
+|                   WellItem                  |       main .WndRegist .WndPanel .WellItem[data-isactive="1"]    |              True            |              True             |
 
 > new_css:
 
