@@ -2,18 +2,15 @@
   font-family: Ubuntu-Bold;
   src: url('../fonts/ubuntu/Ubuntu-Bold.ttf'); 
 }
-
 * {
 	margin: 0px; 
 	padding: 0px; 
 	box-sizing: border-box;
 }
-
 body, html {
 	height: 100%;
 	font-family: Ubuntu-Regular, sans-serif;
 }
-
 a {
 	font-family: Ubuntu-Regular;
 	font-size: 14px;
@@ -25,20 +22,16 @@ a {
   -o-transition: all 0.4s;
   -moz-transition: all 0.4s;
 }
-
 a:focus {
 	outline: none !important;
 }
-
 a:hover {
 	text-decoration: none;
   color: #403866;
 }
-
 h1,h2,h3,h4,h5,h6 {
 	margin: 0px;
 }
-
 p {
 	font-family: Ubuntu-Regular;
 	font-size: 14px;
@@ -46,56 +39,40 @@ p {
 	/* color: #666666; */
 	margin: 0px;
 }
-
 ul, li {
 	margin: 0px;
 	list-style-type: none;
 }
-
 input {
 	outline: none;
 	border: none;
 }
-
 textarea {
   outline: none;
   border: none;
 }
-
 textarea:focus, input:focus {
   border-color: transparent !important;
 }
-
 input::-webkit-input-placeholder { color: #8f8fa1;}
-
 input:-moz-placeholder { color: #8f8fa1;}
-
 input::-moz-placeholder { color: #8f8fa1;}
-
 input:-ms-input-placeholder { color: #8f8fa1;}
-
 textarea::-webkit-input-placeholder { color: #8f8fa1;}
-
 textarea:-moz-placeholder { color: #8f8fa1;}
-
 textarea::-moz-placeholder { color: #8f8fa1;}
-
 textarea:-ms-input-placeholder { color: #8f8fa1;}
-
 label {
   vertical-align: middle;
 }
-
 .pc {
   color: #403866;
   font-family: Ubuntu-Bold;
 }
-
 .limiter {
   width: 100%;
   margin: 0 auto;
 }
-
 .container-login100 {
   width: 100%;  
   min-height: 100vh;
@@ -113,25 +90,21 @@ label {
   background-size: cover;
   background-repeat: no-repeat;;
 }
-
 .wrap-login100 {
   width: 390px;
   background: #fff;
   border-radius: 10px;
   position: relative;
 }
-
 .wrap-login90 {
   width: 90%;
   background: #fff;
   border-radius: 10px;
   position: relative;
 }
-
 .login100-form {
   width: 100%;
 }
-
 .login100-form-title {
   font-family: Ubuntu-Bold;
   font-size: 30px;
@@ -143,7 +116,6 @@ label {
   width: 100%;
   display: block;
 }
-
 .wrap-input100 {
   width: 100%;
   position: relative;
@@ -151,7 +123,6 @@ label {
   border: 1px solid transparent;
   border-radius: 3px;
 }
-
 .input100 {
   font-family: Ubuntu-Bold;
   color: #403866;
@@ -164,7 +135,6 @@ label {
   height: 62px;
   padding: 0 20px 0 38px;
 }
-
 .input90 {
   font-family: Ubuntu-Bold;
   color: #403866;
@@ -177,7 +147,6 @@ label {
   /* height: 62px; */
   padding: 0 20px 0 38px;
 }
-
 .input80 {
   font-family: Ubuntu;
   color: #242036;
@@ -190,7 +159,6 @@ label {
   /* height: 62px; */
   padding: 0 20px 0 38px;
 }
-
 .input100:focus + .focus-input100 {
   visibility: visible;
   opacity: 1;
@@ -201,7 +169,6 @@ label {
   -o-transform: scale(1);
   transform: scale(1);
 }
-
 .container-login100-form-btn {
   width: 100%;
   display: -webkit-box;
@@ -211,7 +178,6 @@ label {
   display: flex;
   flex-wrap: wrap;
 }
-
 .login100-form-btn {
   font-family: Ubuntu-Bold;
   font-size: 16px;
@@ -237,27 +203,22 @@ label {
   -moz-transition: all 0.4s;
   transition: all 0.4s;
 }
-
 .login100-form-btn:hover {
   background-color: #403866;
   cursor: pointer;
 }
-
 .validate-input {
   position: relative;
 }
-
 @media (max-width: 992px) {
   .alert-validate::before {
     visibility: visible;
     opacity: 1;
   }
-
 .panel-heading[data-isanswered] {
   background-color: #a7a6ce;
   color: aliceblue;
 }
-
 .login100-form-btn[disabled], .login100-form-btn[disabled]:hover {
   background-color: #a7a6ce;
   color: grey;

@@ -221,7 +221,7 @@ def new_css(file_path, cur_file_enc, css_dictionary):
     css_file = open (file_path, 'w', encoding=f'{cur_file_enc}')
     for cur_selector in css_dictionary:
         cur_value = css_dictionary[cur_selector]
-        css_file.write(cur_selector + ' ' + cur_value + '\n')
+        css_file.write(cur_selector + ' ' + cur_value)
     css_file.close()
     return None
 
