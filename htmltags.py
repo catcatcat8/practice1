@@ -101,7 +101,7 @@ def class_list(file_path, cur_file_enc):
                 cur_class = line[line.find('class="')+7:]
                 line = cur_class[cur_class.find('"')+1:]
                 cur_class = cur_class[:cur_class.find('"')]
-                while (cur_class.find('{') != -1):  # обработка вложенного javascript
+                while (cur_class.find('{') != -1):  # обработка вложенных фигурных скобок
                     if (cur_class.rfind('{') > cur_class.find('}')):
                         cur_class = cur_class[:cur_class.find('{')] + cur_class[cur_class.find('}')+1:]
                     else:
@@ -119,10 +119,16 @@ def id_list(file_path, cur_file_enc):
     if file_path is not None:
         with open (file_path, encoding=f'{cur_file_enc}') as f:
             for line in f:
-                if (line.find('id="') != -1) and (line.find('<!--') == -1):
+                while (line.find('id="') != -1) and (line.find('<!--') == -1):
                     cur_id = line[line.find('id="'):]
                     cur_id = cur_id[cur_id.find('"')+1:]
                     cur_id = cur_id[:cur_id.find('"')]
+                    while (cur_id.find('{') != -1):  # обработка вложенных фигурных скобок
+                        if (cur_id.rfind('{') > cur_id.find('}')):
+                            cur_id = cur_id[:cur_id.find('{')] + cur_id[cur_id.find('}')+1:]
+                        else:
+                            cur_id = cur_id[:cur_id.rfind('{')] + cur_id[cur_id.find('}')+1:]
+                    line = line[line.find('id="')+4:]
                     if cur_id and cur_id not in css_ids:
                         css_ids.append(cur_id)
     return css_ids
