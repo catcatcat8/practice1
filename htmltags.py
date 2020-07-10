@@ -1,5 +1,5 @@
 # Лебедев Евгений Получение оптимизационного файла (минимизация структуры подгружаемых каскадных таблиц в HTML)
-import os, re, chardet
+import os, sys, re, chardet
 from chardet.universaldetector import UniversalDetector
 
 class Htmlobject:
@@ -30,6 +30,34 @@ def file_existence(_targetFile):
     if file_path is None:
         err_event = f'Файл "{_targetFile}" отсутствует!'
     return file_path, err_event
+
+def html_css_existence(html_path, css_path):
+    """Возвращает все файлы html и css переданные в run.bad"""
+
+    all_html_docs = []
+    all_css_docs = []
+    if html_path.split('\\')[-1].split('.')[-1] in ["html", "htm"]:
+        only_path = html_path[:html_path.rfind('\\')+1]
+        only_file = html_path[html_path.rfind('\\')+1:]
+        if os.path.exists(only_path):
+            listFiles = os.listdir(only_path)
+            if only_file in listFiles:
+                all_html_docs.append(only_path+only_file)
+        else: 
+            print('Html файл не найден!')
+    else:
+        if os.path.exists(html_path):
+            listFiles = os.listdir(html_path)
+            all_html_docs = ([f'{html_path}\\' + x for x in listFiles if (x.split(".")[-1] in ["html", "htm"] and x.split(".")[-2][0] not in ["_"])])
+        else:
+            print('Директория с файлами html не найдена!')
+    if all_html_docs:  # если список переданных html файлов не пустой проверяем css
+        if os.path.exists(css_path):
+            listFiles = os.listdir(css_path)
+            all_css_docs = ([f'{css_path}\\' + x for x in listFiles if (x.split(".")[-1] in ['css'] and x.split(".")[-2][0] not in ["_"])])
+        else:
+            print('Директория с файлами css не найдена!')
+    return all_html_docs, all_css_docs
 
 def encoding(file_path):
     """Вернуть кодировку файла"""
@@ -259,76 +287,94 @@ def new_html(file_path, cur_file_enc, css_docs):
 
 if __name__ == "__main__":
 
-    listFiles = os.listdir("HTML")
-    all_html_docs = ([x for x in listFiles if (x.split(".")[-1] in ["html", "htm"] and x.split(".")[-2][0] not in ["_"])])
-    """_targetFile = "index.html"
-    file_path, err_event = file_existence(_targetFile) """
-    all_tags = []
-    all_styles = []
-    all_classes = []
-    all_ids = []
-    for each_html_doc in all_html_docs:
-        all_used_tags = []
-        styles = []
-        all_used_classes = []
-        all_used_ids = []
-        file_path, err_event = file_existence(each_html_doc)  # получаем путь до html док-та
-        cur_file_enc = encoding(file_path)  # определяем кодировку файла
-        # --- Шаг 1
-        # Получение списка тегов из всех html документов
-        all_used_tags, err_event = html_tags(file_path, cur_file_enc)
-        for each_tag in all_used_tags:
-            if each_tag and each_tag not in all_tags:
-                all_tags.append(each_tag)
-        # --- Шаг 2
-        # Получение списка всех подгружаемых каскадных таблиц
-        styles, err_event = css_styles(file_path, cur_file_enc)
-        for each_style in styles:
-            if each_style and each_style not in all_styles:
-                all_styles.append(each_style)
-        # --- Шаг 3
-        # Получение списка классов и идентификаторов
-        all_used_classes = class_list(file_path, cur_file_enc)  # список классов
-        for each_class in all_used_classes:
-            if each_class and each_class not in all_classes:
-                all_classes.append(each_class)
-        all_used_ids = id_list(file_path, cur_file_enc)  # список идентификаторов
-        for each_id in all_used_ids:
-            if each_id and each_id not in all_ids:
-                all_ids.append(each_id)
-    # получен список тегов
-    print ("HTML tags:")
-    [print(x.upper()) for x in all_tags]
-    # получен список локальных стилей
-    print ("\nLocal CSS styles:")
-    [print(x) for x in all_styles]
-    # получен список используемых классов
-    print ("\nClass list:")
-    [print(x) for x in all_classes]
-    # получен список идентификаторов
-    print ("\nID list:")
-    [print(x) for x in all_ids]
-    # --- Шаг 4
-    # Обработка CSS документов
-    css_docs = []
-    for css_doc in all_styles:
-        file_path, err_event = file_existence(css_doc)
-        if err_event is None:
-            cur_file_enc = encoding(file_path)
-            css_docs.append(css_work(file_path, cur_file_enc, all_tags, all_classes, all_ids)) 
+    try: 
+        (sys.argv[1] and sys.argv[2])
+    except IndexError:
+        print ('\nПроверьте правильность заполнения run.bat!!!')
+        print ('Файл должен быть заполнен по шаблону ("<", ">" ставить не надо, "_" - означает пробел):')
+        print ('-----------------------------------------------------------------------------------------------------------------------')
+        print ('<путь до интерпретатора python>_<-O>_<htmltags.py>_<путь или директория до файла(-ов) HTML>_<директория до файла(-ов) CSS>')
+        print ('-----------------------------------------------------------------------------------------------------------------------')
+        print (r'Например: C:\Users\Python\Python38-32\python.exe -O htmltags.py C:\Users\Documents\HTML C:\Users\Documents\HTML\css')
+    else:
+        html_path = sys.argv[1]  # папка или файл с html файлами
+        css_path = sys.argv[2]  # папка с css файлами """
+        all_html_docs, all_css_docs = html_css_existence(html_path, css_path)
+        if all_html_docs and all_css_docs:  # если передали хотя бы 1 html файл и хотя бы 1 css файл
+            all_tags = []
+            all_styles = []
+            all_classes = []
+            all_ids = []
+            for each_html_doc in all_html_docs:
+                all_used_tags = []
+                styles = []
+                all_used_classes = []
+                all_used_ids = []
+                cur_file_enc = encoding(each_html_doc)  # определяем кодировку файла
+                # --- Шаг 1
+                # Получение списка тегов из всех html документов
+                all_used_tags, err_event = html_tags(each_html_doc, cur_file_enc)
+                for each_tag in all_used_tags:
+                    if each_tag and each_tag not in all_tags:
+                        all_tags.append(each_tag)
+                # --- Шаг 2
+                # Получение списка всех подгружаемых каскадных таблиц
+                styles, err_event = css_styles(each_html_doc, cur_file_enc)
+                for each_style in styles:
+                    if each_style and each_style not in all_styles:
+                        all_styles.append(each_style)
+                # --- Шаг 3
+                # Получение списка классов и идентификаторов
+                all_used_classes = class_list(each_html_doc, cur_file_enc)  # список классов
+                for each_class in all_used_classes:
+                    if each_class and each_class not in all_classes:
+                        all_classes.append(each_class)
+                all_used_ids = id_list(each_html_doc, cur_file_enc)  # список идентификаторов
+                for each_id in all_used_ids:
+                    if each_id and each_id not in all_ids:
+                        all_ids.append(each_id)
+            # получен список тегов
+            print ("HTML tags:")
+            [print(x.upper()) for x in all_tags]
+            # получен список локальных стилей
+            print ("\nLocal CSS styles:")
+            [print(x) for x in all_styles]
+            # получен список идентификаторов
+            print ("\nID list:")
+            [print(x) for x in all_ids]
+            # получен список используемых классов
+            print ("\nClass list:")
+            [print(x) for x in all_classes]
+            # --- Шаг 4
+            # Обработка CSS документов
+            css_docs = []
+            for css_doc in all_styles:
+                flag_file_found = False
+                for real_css_doc in all_css_docs:
+                    if css_doc in real_css_doc:
+                        flag_file_found = True
+                        cur_file_enc = encoding(real_css_doc)
+                        css_docs.append(css_work(real_css_doc, cur_file_enc, all_tags, all_classes, all_ids))
+                        break
+                if not flag_file_found:
+                    print (f'Файл {css_doc} не был обработан, т.к. не находится в указанной директории')
+            # --- Шаг 5
+            # Создание минимизированных файлов
+            dict_num = 0
+            for css_doc in all_styles:
+                for real_css_doc in all_css_docs:
+                    if css_doc in real_css_doc:
+                        cur_file_enc = encoding(real_css_doc)
+                        new_css(real_css_doc, cur_file_enc, css_docs[dict_num])  # создаются минимизированные файлы css
+                        dict_num += 1
+                        break
+            for each_html_doc in all_html_docs:
+                cur_file_enc = encoding(each_html_doc)
+                new_html(each_html_doc, cur_file_enc, all_styles)  # создается новый html файл
         else:
-        # ошибка существования css файла
-            print(err_event)
-    # --- Шаг 5
-    # Создание минимизированных файлов
-    dict_num = 0
-    for css_doc in all_styles:
-        file_path, err_event = file_existence(css_doc)
-        if err_event is None:
-            cur_file_enc = encoding(file_path)
-            new_css(file_path, cur_file_enc, css_docs[dict_num])  # создаются минимизированные файлы css
-            dict_num += 1
-    for each_html_doc in all_html_docs:
-        file_path, err_event = file_existence(each_html_doc)
-        cur_file_enc = encoding(file_path)
-        new_html(file_path, cur_file_enc, all_styles)  # создается новый html файл
+            print ('\nПроверьте правильность заполнения run.bat!!!')
+            print ('Файл должен быть заполнен по шаблону ("<", ">" ставить не надо, "_" - означает пробел):')
+            print ('-----------------------------------------------------------------------------------------------------------------------')
+            print ('<путь до интерпретатора python>_<-O>_<htmltags.py>_<путь или директория до файла(-ов) HTML>_<директория до файла(-ов) CSS>')
+            print ('-----------------------------------------------------------------------------------------------------------------------')
+            print (r'Например: C:\Users\Python\Python38-32\python.exe -O htmltags.py C:\Users\Documents\HTML C:\Users\Documents\HTML\css')
