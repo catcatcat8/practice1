@@ -28,7 +28,7 @@ def test_html_tags():
 def test_css_styles():
     """Тест проверки возвращаемых локальных css документов"""
 
-    list_styles_indexhtml = ['util.css', 'main.css']  # список локальных стилей index.html
+    list_styles_indexhtml = ['css\\util.css', 'css\\main.css']  # список локальных стилей index.html
 
     file_path, err_event = htmltags.file_existence('index.html')
     styles, err_event = htmltags.css_styles(file_path, 'utf-8')
