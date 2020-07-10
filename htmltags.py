@@ -84,7 +84,7 @@ def css_styles(file_path, cur_file_enc):
                     pos = link.find('href="') + 6  # номер первого символа стиля
                     if (link[pos:pos+5] != 'https'):  # если файл - локальный
                         if link.rfind('/') != -1:
-                            styles.append(link[link.rfind('/')+1:-2])
+                            styles.append(link[link.find('/')+1:-2].replace('/', '\\'))
                         else:
                             styles.append(link[pos:-2])
     if not styles:
@@ -240,10 +240,18 @@ def new_html(file_path, cur_file_enc, css_docs):
                 href = href[href.find('"')+1:]
                 href = href[:href.find('"')]
                 for css_doc in css_docs:
+                    css_doc = css_doc.replace('\\', '/')
                     if href.find(css_doc) != -1:
                         style_found = True
-                        new_line = line[:line.find(css_doc)] + '_' + line[line.find(css_doc):]
-                        new_html_file.write(new_line)
+                        if href.find('/') == -1:
+                            new_line = line[:line.find(css_doc)] + '_' + line[line.find(css_doc):]
+                            new_html_file.write(new_line)
+                        else:
+                            href = href[:href.rfind('/')+1] + '_' + href[href.rfind('/')+1:]
+                            line2 = line[line.find('href="')+6:]
+                            line2 = line2[line2.find('"'):]
+                            new_line = line[:line.find('href="')+6] + href + line2
+                            new_html_file.write(new_line)
                         break
                 if not style_found:
                     new_html_file.write(line)
