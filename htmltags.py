@@ -36,7 +36,7 @@ def html_css_existence(html_path, css_path):
 
     all_html_docs = []
     all_css_docs = []
-    if html_path.split('\\')[-1].split('.')[-1] in ["html", "htm"]:
+    if html_path.split('\\')[-1].find('.htm') != -1:
         only_path = html_path[:html_path.rfind('\\')+1]
         only_file = html_path[html_path.rfind('\\')+1:]
         if os.path.exists(only_path):
@@ -52,11 +52,21 @@ def html_css_existence(html_path, css_path):
         else:
             print('Директория с файлами html не найдена!')
     if all_html_docs:  # если список переданных html файлов не пустой проверяем css
-        if os.path.exists(css_path):
-            listFiles = os.listdir(css_path)
-            all_css_docs = ([f'{css_path}\\' + x for x in listFiles if (x.split(".")[-1] in ['css'] and x.split(".")[-2][0] not in ["_"])])
+        if css_path.split('\\')[-1].find('.css') != -1:
+            only_path = css_path[:css_path.rfind('\\')+1]
+            only_file = css_path[css_path.rfind('\\')+1:]
+            if os.path.exists(only_path):
+                listFiles = os.listdir(only_path)
+                if only_file in listFiles:
+                    all_css_docs.append(only_path+only_file)
+            else: 
+                print('CSS файл не найден!')
         else:
-            print('Директория с файлами css не найдена!')
+            if os.path.exists(css_path):
+                listFiles = os.listdir(css_path)
+                all_css_docs = ([f'{css_path}\\' + x for x in listFiles if (x.split(".")[-1] in ['css'] and x.split(".")[-2][0] not in ["_"])])
+            else:
+                print('Директория с файлами css не найдена!')
     return all_html_docs, all_css_docs
 
 def encoding(file_path):
@@ -292,9 +302,9 @@ if __name__ == "__main__":
     except IndexError:
         print ('\nПроверьте правильность заполнения run.bat!!!')
         print ('Файл должен быть заполнен по шаблону ("<", ">" ставить не надо, "_" - означает пробел):')
-        print ('-----------------------------------------------------------------------------------------------------------------------')
-        print ('<путь до интерпретатора python>_<-O>_<htmltags.py>_<путь или директория до файла(-ов) HTML>_<директория до файла(-ов) CSS>')
-        print ('-----------------------------------------------------------------------------------------------------------------------')
+        print ('-----------------------------------------------------------------------------------------------------------------------------------')
+        print ('<путь до интерпретатора python>_<-O>_<htmltags.py>_<путь или директория до файла(-ов) HTML>_<путь или директория до файла(-ов) CSS>')
+        print ('-----------------------------------------------------------------------------------------------------------------------------------')
         print (r'Например: C:\Users\Python\Python38-32\python.exe -O htmltags.py C:\Users\Documents\HTML C:\Users\Documents\HTML\css')
     else:
         html_path = sys.argv[1]  # папка или файл с html файлами
@@ -374,7 +384,7 @@ if __name__ == "__main__":
         else:
             print ('\nПроверьте правильность заполнения run.bat!!!')
             print ('Файл должен быть заполнен по шаблону ("<", ">" ставить не надо, "_" - означает пробел):')
-            print ('-----------------------------------------------------------------------------------------------------------------------')
-            print ('<путь до интерпретатора python>_<-O>_<htmltags.py>_<путь или директория до файла(-ов) HTML>_<директория до файла(-ов) CSS>')
-            print ('-----------------------------------------------------------------------------------------------------------------------')
+            print ('-----------------------------------------------------------------------------------------------------------------------------------')
+            print ('<путь до интерпретатора python>_<-O>_<htmltags.py>_<путь или директория до файла(-ов) HTML>_<путь или директория до файла(-ов) CSS>')
+            print ('-----------------------------------------------------------------------------------------------------------------------------------')
             print (r'Например: C:\Users\Python\Python38-32\python.exe -O htmltags.py C:\Users\Documents\HTML C:\Users\Documents\HTML\css')
