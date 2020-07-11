@@ -120,7 +120,7 @@ def css_styles(file_path, cur_file_enc):
                             link = item
                             break
                     pos = link.find('href="') + 6  # номер первого символа стиля
-                    if (link[pos:pos+5] != 'https'):  # если файл - локальный
+                    if (link[pos:pos+4] != 'http'):  # если файл - локальный
                         if link.rfind('/') != -1:
                             styles.append(link[link.find('/')+1:-2].replace('/', '\\'))
                         else:
