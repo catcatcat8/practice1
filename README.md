@@ -11,6 +11,7 @@
 > <путь до интерпретатора python>\_<-O>\_<htmltags.py>\_<путь или директория до файла(-ов) HTML>\_<путь или директория до файла(-ов) CSS>
 
 "<, >" писать не надо, "\_" - означает пробел
+
 Пример описания строки запуска:
 
 > C:\Users\Python\Python38-32\python.exe -O htmltags.py C:\Users\Documents\HTML C:\Users\Documents\HTML\css
