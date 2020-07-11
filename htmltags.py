@@ -11,25 +11,6 @@ class Htmlobject:
 
     def htmlobject_print(self):
         print(f'\nТег: {self.tag_name}\nИспользуемые классы CSS: {self.class_names}')  # вывод информации об объекте
-        
-
-def file_existence(_targetFile):
-    """Вернуть путь к файлу, если файл существует"""
-
-    err_event = None  # возвращаемый текст ошибки
-    folderslist = ["practice1", "Git"]  # список корневых папок
-    cur_dir = os.getcwd()
-    file_path = None  # путь к обрабатываему файлу
-    for item in folderslist:
-        work_dir = f'{cur_dir[:cur_dir.rfind(item)+len(item)]}\\HTML'
-        _tmp = f'{work_dir}\\{_targetFile}'
-        # проверка существования файла
-        if os.path.isfile(_tmp):
-            file_path = _tmp
-            break
-    if file_path is None:
-        err_event = f'Файл "{_targetFile}" отсутствует!'
-    return file_path, err_event
 
 def html_css_existence(html_path, css_path):
     """Возвращает все файлы html и css переданные в run.bad"""

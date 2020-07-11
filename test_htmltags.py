@@ -1,14 +1,21 @@
-# Лебедев Евгений Тестирование скрипта на двух существующих файлах
-import re, htmltags
+# Лебедев Евгений Тестирование скрипта
+import re, htmltags, pytest
 
-targetFiles = ["index.html", "errresult.html"]
+html_path1 = 'C:\\Users\\xiaomi\\Documents\\GitHub\\practice1\\HTML\\index.html'
+html_path2 = 'C:\\Users\\xiaomi\\Documents\\GitHub\\practice1\\HTML\\errresult.html'
+css_path = 'C:\\Users\\xiaomi\\Documents\\GitHub\\practice1\\HTML\\css'
 
-def test_file_existence():
-    """Тест проверки существования файла"""
+def test_html_css_existence():
+    """Тест проверки списка возвращаемых по пути"""
 
-    for cur_file in targetFiles:
-        file_path, err_event = htmltags.file_existence(cur_file)
-        assert file_path, f'{err_event}'
+    list_css_docs = ['C:\\Users\\xiaomi\\Documents\\GitHub\\practice1\\HTML\\css\\main.css',
+    'C:\\Users\\xiaomi\\Documents\\GitHub\\practice1\\HTML\\css\\util.css']
+    all_html_docs, all_css_docs = htmltags.html_css_existence(html_path1, css_path)
+    assert all_html_docs==[html_path1]
+    assert all_css_docs==list_css_docs
+    all_html_docs, all_css_docs = htmltags.html_css_existence(html_path2, css_path)
+    assert all_html_docs==[html_path2]
+    assert all_css_docs==list_css_docs
 
 def test_html_tags():
     """Тест проверки списка возвращаемых тегов"""
@@ -17,12 +24,10 @@ def test_html_tags():
     'div', 'form', 'span', 'input', 'p', 'ul', 'li']
     list_tags_errresulthtml = ['p', 'span', 'div', 'ul', 'li']
 
-    file_path, err_event = htmltags.file_existence('index.html')
-    tags, err_event = htmltags.html_tags(file_path, 'utf-8')
+    tags, err_event = htmltags.html_tags(html_path1, 'utf-8')
     assert tags==list_tags_indexhtml, f'{err_event}'  # список тегов index.html
 
-    file_path, err_event = htmltags.file_existence('errresult.html')
-    tags, err_event = htmltags.html_tags(file_path, 'utf-8')
+    tags, err_event = htmltags.html_tags(html_path2, 'utf-8')
     assert tags == list_tags_errresulthtml, f'{err_event}'  # список тегов errresult.html
 
 def test_css_styles():
@@ -30,12 +35,10 @@ def test_css_styles():
 
     list_styles_indexhtml = ['css\\util.css', 'css\\main.css']  # список локальных стилей index.html
 
-    file_path, err_event = htmltags.file_existence('index.html')
-    styles, err_event = htmltags.css_styles(file_path, 'utf-8')
+    styles, err_event = htmltags.css_styles(html_path1, 'utf-8')
     assert styles == list_styles_indexhtml, f'{err_event}'
 
-    file_path, err_event = htmltags.file_existence('errresult.html')
-    styles, err_event = htmltags.css_styles(file_path, 'utf-8')
+    styles, err_event = htmltags.css_styles(html_path2, 'utf-8')
     assert not styles, f'{err_event}'  # ни одного локального стиля в errresult.html
 
 def test_class_list():
@@ -48,20 +51,18 @@ def test_class_list():
     list_classes_errresulthtml = ['input80', 'm-b-20', 'fs-20', 'wrap-login90', 'p-b-10', 'm-t-20', 
     'm-t-40', 'm-b-10', 'm-l-10', 'pc', 'fs-12', 'wrap-login100', 'p-t-10', 'p-b-90', 'ab-b-l']  # список классов errresult.html
 
-    file_path, err_event = htmltags.file_existence('index.html')
-    classes = htmltags.class_list(file_path, 'utf-8')
+    classes = htmltags.class_list(html_path1, 'utf-8')
     assert classes == list_classes_indexhtml, f'{err_event}'
 
-    file_path, err_event = htmltags.file_existence('errresult.html')
-    classes = htmltags.class_list(file_path, 'utf-8')
+    classes = htmltags.class_list(html_path2, 'utf-8')
     assert classes == list_classes_errresulthtml,  f'{err_event}'
 
 def test_id_list():
     """Тест проверки возвращаемых идентификаторов css"""
 
     list_ids_examhtml = ['section_start', 'accordion', 'ques', 'collapse', 'sendresult']  # список идентификаторов exam.html
-    file_path, err_event = htmltags.file_existence('exam.html')
-    id_list = htmltags.id_list(file_path, 'utf-8')
+    exam_html_path = 'C:\\Users\\xiaomi\\Documents\\GitHub\\practice1\\HTML\\exam.html'
+    id_list = htmltags.id_list(exam_html_path, 'utf-8')
     assert id_list == list_ids_examhtml,  f'{err_event}'
 
 def test_selectors():
