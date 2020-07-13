@@ -155,7 +155,7 @@ def id_list(file_path, cur_file_enc):
 def css_work(file_path, cur_file_enc, all_used_tags, all_used_classes, all_used_ids):
     """Вернуть словарь {название класса/ID: его содержимое CSS} """
 
-    print(f'Обработан файл CSS {file_path}:')
+    count_css_processed.append(file_path)
     used_css = {}  # словарь, хранящий весь значимый код css
     flag_sel_block = True  # true - смотрим селектор; false - смотрим блок
     flag_selector_found = False  # true - найден селектор; false - не найден
@@ -292,6 +292,7 @@ if __name__ == "__main__":
         css_path = sys.argv[2]  # папка с css файлами """
         all_html_docs, all_css_docs = html_css_existence(html_path, css_path)
         if all_html_docs and all_css_docs:  # если передали хотя бы 1 html файл и хотя бы 1 css файл
+            count_css_processed = []
             all_tags = []
             all_styles = []
             all_classes = []
@@ -349,6 +350,9 @@ if __name__ == "__main__":
                         break
                 if not flag_file_found:
                     print (f'Файл {css_doc} не был обработан, т.к. не находится в указанной директории')
+            # Вывод названия обработанных файлов
+            print (f'Обработано {len(count_css_processed)} CSS файла:')
+            [print(x) for x in count_css_processed]
             # --- Шаг 5
             # Создание минимизированных файлов
             dict_num = 0
