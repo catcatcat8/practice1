@@ -276,6 +276,21 @@ def new_html(file_path, cur_file_enc, css_docs):
                     new_html_file.write(line)
     return None
 
+def stats(css_files):
+    """Вернуть статистику об обработанных css файлах"""
+
+    print ('Размер css файлов:')
+    for css_file in css_files:
+        size = os.path.getsize(css_file)  # размер css файла до оптимизации
+        css_file1 = css_file[css_file.rfind('\\')+1:]
+        print (f' {css_file1}: {round(size/1024, 2)} kbytes')
+        css_file = css_file[:css_file.rfind('\\')+1] + '_' + css_file[css_file.rfind('\\')+1:]
+        size = os.path.getsize(css_file)  # размер css файла после оптимизации
+        css_file1 = css_file[css_file.rfind('\\')+1:]
+        print (f'{css_file1}: {round(size/1024, 2)} kbytes')
+
+    return None
+
 if __name__ == "__main__":
 
     try: 
@@ -353,6 +368,7 @@ if __name__ == "__main__":
             # Вывод названия обработанных файлов
             print (f'Обработано {len(count_css_processed)} CSS файла:')
             [print(x) for x in count_css_processed]
+            stats(count_css_processed)
             # --- Шаг 5
             # Создание минимизированных файлов
             dict_num = 0
