@@ -280,14 +280,20 @@ def stats(css_files):
     """Вернуть статистику об обработанных css файлах"""
 
     print ('Размер css файлов:')
+    base = []
+    opt = []
     for css_file in css_files:
         size = os.path.getsize(css_file)  # размер css файла до оптимизации
         css_file1 = css_file[css_file.rfind('\\')+1:]
+        base.append(size/1024)
         print (f' {css_file1}: {round(size/1024, 2)} kbytes')
         css_file = css_file[:css_file.rfind('\\')+1] + '_' + css_file[css_file.rfind('\\')+1:]
         size = os.path.getsize(css_file)  # размер css файла после оптимизации
         css_file1 = css_file[css_file.rfind('\\')+1:]
+        opt.append(size/1024)
         print (f'{css_file1}: {round(size/1024, 2)} kbytes')
+    percent = round((1-sum(opt)/sum(base))*100, 2)
+    print (f'Оптимизация составила {percent}%')
 
     return None
 
