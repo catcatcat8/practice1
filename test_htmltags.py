@@ -25,10 +25,10 @@ def test_html_tags():
     list_tags_errresulthtml = ['p', 'span', 'div', 'ul', 'li']
 
     tags, err_event = htmltags.html_tags(html_path1, 'utf-8')
-    assert tags==list_tags_indexhtml, f'{err_event}'  # список тегов index.html
+    assert tags==list_tags_indexhtml, 'ошибка списка тегов "index.html"'  # список тегов index.html
 
     tags, err_event = htmltags.html_tags(html_path2, 'utf-8')
-    assert tags == list_tags_errresulthtml, f'{err_event}'  # список тегов errresult.html
+    assert tags == list_tags_errresulthtml, 'ошибка списка тегов "errresult.html"'  # список тегов errresult.html
 
 def test_css_styles():
     """Тест проверки возвращаемых локальных css документов"""
@@ -36,10 +36,10 @@ def test_css_styles():
     list_styles_indexhtml = ['css\\util.css', 'css\\main.css']  # список локальных стилей index.html
 
     styles, err_event = htmltags.css_styles(html_path1, 'utf-8')
-    assert styles == list_styles_indexhtml, f'{err_event}'
+    assert styles == list_styles_indexhtml, 'ошибка списка css документов "index.html"'
 
     styles, err_event = htmltags.css_styles(html_path2, 'utf-8')
-    assert not styles, f'{err_event}'  # ни одного локального стиля в errresult.html
+    assert not styles, 'ошибка списка css документов "errresult.html"'  # ни одного локального стиля в errresult.html
 
 def test_class_list():
     """Тест проверки возвращаемых классов css"""
@@ -52,10 +52,10 @@ def test_class_list():
     'm-t-40', 'm-b-10', 'm-l-10', 'pc', 'fs-12', 'wrap-login100', 'p-t-10', 'p-b-90', 'ab-b-l']  # список классов errresult.html
 
     classes = htmltags.class_list(html_path1, 'utf-8')
-    assert classes == list_classes_indexhtml, f'{err_event}'
+    assert classes == list_classes_indexhtml, 'ошибка списка классов "index.html"'
 
     classes = htmltags.class_list(html_path2, 'utf-8')
-    assert classes == list_classes_errresulthtml,  f'{err_event}'
+    assert classes == list_classes_errresulthtml, 'ошибка списка классов "errresult.html"'
 
 def test_id_list():
     """Тест проверки возвращаемых идентификаторов css"""
@@ -63,7 +63,7 @@ def test_id_list():
     list_ids_examhtml = ['section_start', 'accordion', 'ques', 'collapse', 'sendresult']  # список идентификаторов exam.html
     exam_html_path = 'C:\\Users\\xiaomi\\Documents\\GitHub\\practice1\\HTML\\exam.html'
     id_list = htmltags.id_list(exam_html_path, 'utf-8')
-    assert id_list == list_ids_examhtml,  f'{err_event}'
+    assert id_list == list_ids_examhtml,  'ошибка списка id "exam.html"'
 
 def test_selectors():
     """Тест проверки отбора селекторов"""
@@ -115,4 +115,7 @@ def test_selectors():
         if not flag_selector_found:
             received_result.append(False)
     
-    assert expected_result == received_result
+    assert expected_result == received_result, 'ошибка разбора селекторов'
+
+if __name__ == "__main__":
+    pytest.main()
