@@ -137,4 +137,6 @@ reg_exp = `'\#' + cur_id + r'($|:{1,2}.+$| *\,.+$|\[.+$| *\~.+$| *>.+$| *\+.+$| 
 
 > chardet.universaldetector (https://pypi.org/project/chardet/)
 
+License
+----
 Лицензия: GPL-3.0 License
