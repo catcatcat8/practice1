@@ -157,6 +157,7 @@ def id_list(file_path, cur_file_enc):
 def css_work(file_path, cur_file_enc, all_used_tags, all_used_classes, all_used_ids):
     """Вернуть словарь {название класса/ID: его содержимое CSS} """
 
+    global count_css_processed
     count_css_processed.append(file_path)
     used_css = {}  # словарь, хранящий весь значимый код css
     flag_sel_block = True  # true - смотрим селектор; false - смотрим блок
@@ -279,13 +280,13 @@ def new_html(file_path, cur_file_enc, css_docs):
                     new_html_file.write(line)
     return None
 
-def stats(css_files):
+def stats(count_css_processed):
     """Вернуть статистику об обработанных css файлах"""
 
     print('Размер css файлов:')
     base = []
     opt = []
-    for css_file in css_files:
+    for css_file in count_css_processed:
         size = os.path.getsize(css_file)  # размер css файла до оптимизации
         css_file1 = css_file[css_file.rfind('\\')+1:]
         base.append(size/1024)
@@ -315,6 +316,8 @@ if __name__ == "__main__":
     else:
         html_path = sys.argv[1]  # папка или файл с html файлами
         css_path = sys.argv[2]  # папка с css файлами """
+        html_path = r'C:\Users\xiaomi\Documents\GitHub\practice1\HTML'
+        css_path = r'C:\Users\xiaomi\Documents\GitHub\practice1\HTML\css'
         all_html_docs, all_css_docs = html_css_existence(html_path, css_path)
         if all_html_docs and all_css_docs:  # если передали хотя бы 1 html файл и хотя бы 1 css файл
             count_css_processed = []
@@ -375,10 +378,6 @@ if __name__ == "__main__":
                         break
                 if not flag_file_found:
                     print (f'Файл {css_doc} не был обработан, т.к. не находится в указанной директории')
-            # Вывод названия обработанных файлов
-            print(f'Обработано {len(count_css_processed)} CSS файла:')
-            [print(x) for x in count_css_processed]
-            stats(count_css_processed)
             # --- Шаг 5
             # Создание минимизированных файлов
             dict_num = 0
@@ -392,5 +391,9 @@ if __name__ == "__main__":
             for each_html_doc in all_html_docs:
                 cur_file_enc = encoding(each_html_doc)
                 new_html(each_html_doc, cur_file_enc, all_styles)  # создается новый html файл
+            # Вывод названия обработанных файлов
+            print(f'Обработано {len(count_css_processed)} CSS файла:')
+            [print(x) for x in count_css_processed]
+            stats(count_css_processed)
         else:
             print(_tmp)
