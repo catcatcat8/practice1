@@ -68,14 +68,14 @@ def test_id_list():
 def test_selectors():
     """Тест проверки отбора селекторов"""
 
-    list_selectors = ['h1', '@font-face', '*', 'h1, h2, h3, h4, h5, h6', 'div',  'a:hover', '.class1', '.class666', 
+    list_selectors = ['h1', 'H1', '@font-face', '*', 'h1, h2, h3, h4, h5, h6', 'div',  'a:hover', '.class1', '.class666', 
     '.class2.class1', '#id1', 'li a', '.class2::pseudo2', '.x + .y', '.x > .y',
     ':lang(en) .custom-file-input ~ .custom-file-label::after',
     '.navbar-nav.mainUser > li.nav-item .nav-link:hover',
     'main .WndRegist .WndPanel .WellItem[data-isactive="1"]']  # список селекторов
     tag_class_id_list = ['h1', 'h2', 'h6', 'a', 'class1', 'class2', 'id1', 'x', 'y', 'body', 'html', 
     'custom-file-label', 'nav-link', 'WellItem']  # список используемых тегов, классов, id
-    expected_result = [True, True, True, True, False, True, True, False, 
+    expected_result = [True, True, True, True, True, False, True, True, False, 
     True, True, True, True, True, True, True, True, True,]  # ожидаемый результат
     received_result = []
 
@@ -97,10 +97,11 @@ def test_selectors():
                     received_result.append(True)
                     break
         if not flag_selector_found:  # если классы не найдены - проверяем теги
+            cur_selector_tag = cur_selector.lower()
             for cur_tag in tag_class_id_list:
                 # регулярное выражение проверки тега
                 reg_exp = r'([^\w\.]|^)' + cur_tag + r'($|:{1,2}.+$| *\,.+$| ?\..+$|\[.+$| *\~.+$| *>.+$| *\+.+$| +.+$)'
-                if re.search(reg_exp, cur_selector) is not None:
+                if re.search(reg_exp, cur_selector_tag) is not None:
                     flag_selector_found = True
                     received_result.append(True)
                     break

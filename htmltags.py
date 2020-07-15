@@ -1,5 +1,7 @@
 # Лебедев Евгений Получение оптимизационного файла (минимизация структуры подгружаемых каскадных таблиц в HTML)
-import os, sys, re, chardet
+import os
+import sys
+import re
 from chardet.universaldetector import UniversalDetector
 
 class Htmlobject:
@@ -199,10 +201,11 @@ def css_work(file_path, cur_file_enc, all_used_tags, all_used_classes, all_used_
                             if flag_selector_found:  # селектор найден, больше не просматриваем классы
                                 break
                     if not flag_selector_found:  # если классы не найдены - проверяем теги
+                        cur_selector_tag = cur_selector.lower()
                         for cur_tag in all_used_tags:
                             # регулярное выражение проверки тега
                             reg_exp = r'([^\w\.]|^)' + cur_tag + r'($|:{1,2}.+$| *\,.+$| ?\..+$|\[.+$| *\~.+$| *>.+$| *\+.+$| +.+$)'
-                            if re.search(reg_exp, cur_selector) is not None:
+                            if re.search(reg_exp, cur_selector_tag) is not None:
                                 flag_selector_found = True
                                 code_block = line[line.find("{"):]
                                 if code_block.find('}') != -1:
@@ -279,35 +282,36 @@ def new_html(file_path, cur_file_enc, css_docs):
 def stats(css_files):
     """Вернуть статистику об обработанных css файлах"""
 
-    print ('Размер css файлов:')
+    print('Размер css файлов:')
     base = []
     opt = []
     for css_file in css_files:
         size = os.path.getsize(css_file)  # размер css файла до оптимизации
         css_file1 = css_file[css_file.rfind('\\')+1:]
         base.append(size/1024)
-        print (f' {css_file1}: {round(size/1024, 2)} kbytes')
+        print(f' {css_file1}: {round(size/1024, 2)} kbytes')
         css_file = css_file[:css_file.rfind('\\')+1] + '_' + css_file[css_file.rfind('\\')+1:]
         size = os.path.getsize(css_file)  # размер css файла после оптимизации
         css_file1 = css_file[css_file.rfind('\\')+1:]
         opt.append(size/1024)
         print (f'{css_file1}: {round(size/1024, 2)} kbytes')
     percent = round((1-sum(opt)/sum(base))*100, 2)
-    print (f'Оптимизация составила {percent}%')
+    print(f'Оптимизация составила {percent}%')
 
     return None
 
 if __name__ == "__main__":
 
+    _tmp = r'''Проверьте правильность заполнения run.bat!!!
+Файл должен быть заполнен по шаблону ("<", ">" ставить не надо, "_" - означает пробел):
+-----------------------------------------------------------------------------------------------------------------------------------
+<путь до интерпретатора python>_<-O>_<htmltags.py>_<путь или директория до файла(-ов) HTML>_<путь или директория до файла(-ов) CSS>
+-----------------------------------------------------------------------------------------------------------------------------------
+Например: C:\Users\Python\Python38-32\python.exe -O htmltags.py C:\Users\Documents\HTML C:\Users\Documents\HTML\css'''
     try: 
         (sys.argv[1] and sys.argv[2])
     except IndexError:
-        print ('\nПроверьте правильность заполнения run.bat!!!')
-        print ('Файл должен быть заполнен по шаблону ("<", ">" ставить не надо, "_" - означает пробел):')
-        print ('-----------------------------------------------------------------------------------------------------------------------------------')
-        print ('<путь до интерпретатора python>_<-O>_<htmltags.py>_<путь или директория до файла(-ов) HTML>_<путь или директория до файла(-ов) CSS>')
-        print ('-----------------------------------------------------------------------------------------------------------------------------------')
-        print (r'Например: C:\Users\Python\Python38-32\python.exe -O htmltags.py C:\Users\Documents\HTML C:\Users\Documents\HTML\css')
+        print(_tmp)
     else:
         html_path = sys.argv[1]  # папка или файл с html файлами
         css_path = sys.argv[2]  # папка с css файлами """
@@ -372,7 +376,7 @@ if __name__ == "__main__":
                 if not flag_file_found:
                     print (f'Файл {css_doc} не был обработан, т.к. не находится в указанной директории')
             # Вывод названия обработанных файлов
-            print (f'Обработано {len(count_css_processed)} CSS файла:')
+            print(f'Обработано {len(count_css_processed)} CSS файла:')
             [print(x) for x in count_css_processed]
             stats(count_css_processed)
             # --- Шаг 5
@@ -389,9 +393,4 @@ if __name__ == "__main__":
                 cur_file_enc = encoding(each_html_doc)
                 new_html(each_html_doc, cur_file_enc, all_styles)  # создается новый html файл
         else:
-            print ('\nПроверьте правильность заполнения run.bat!!!')
-            print ('Файл должен быть заполнен по шаблону ("<", ">" ставить не надо, "_" - означает пробел):')
-            print ('-----------------------------------------------------------------------------------------------------------------------------------')
-            print ('<путь до интерпретатора python>_<-O>_<htmltags.py>_<путь или директория до файла(-ов) HTML>_<путь или директория до файла(-ов) CSS>')
-            print ('-----------------------------------------------------------------------------------------------------------------------------------')
-            print (r'Например: C:\Users\Python\Python38-32\python.exe -O htmltags.py C:\Users\Documents\HTML C:\Users\Documents\HTML\css')
+            print(_tmp)
