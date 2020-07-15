@@ -183,7 +183,10 @@ def css_work(file_path, cur_file_enc, all_used_tags, all_used_classes, all_used_
                             flag_selector_found = True
                             code_block = line[line.find("{"):]
                             if code_block.find('}') != -1:
-                                used_css[cur_selector] = code_block
+                                if cur_selector not in used_css:
+                                    used_css[cur_selector] = [code_block]
+                                else:
+                                    used_css[cur_selector].append(code_block)
                                 count_open = 0
                             else:
                                 flag_sel_block = False
@@ -192,7 +195,10 @@ def css_work(file_path, cur_file_enc, all_used_tags, all_used_classes, all_used_
                             flag_selector_found = True
                             code_block = line[line.find("{"):]
                             if code_block.find('}') != -1:
-                                used_css[cur_selector] = code_block
+                                if cur_selector not in used_css:
+                                    used_css[cur_selector] = [code_block]
+                                else:
+                                    used_css[cur_selector].append(code_block)
                                 count_open = 0
                             else:
                                 flag_sel_block = False
@@ -207,7 +213,10 @@ def css_work(file_path, cur_file_enc, all_used_tags, all_used_classes, all_used_
                                     flag_selector_found = True
                                     code_block = line[line.find("{"):]
                                     if code_block.find('}') != -1:
-                                        used_css[cur_selector] = code_block
+                                        if cur_selector not in used_css:
+                                            used_css[cur_selector] = [code_block]
+                                        else:
+                                            used_css[cur_selector].append(code_block)
                                         count_open = 0
                                     else:
                                         flag_sel_block = False
@@ -223,7 +232,10 @@ def css_work(file_path, cur_file_enc, all_used_tags, all_used_classes, all_used_
                                     flag_selector_found = True
                                     code_block = line[line.find("{"):]
                                     if code_block.find('}') != -1:
-                                        used_css[cur_selector] = code_block
+                                        if cur_selector not in used_css:
+                                            used_css[cur_selector] = [code_block]
+                                        else:
+                                            used_css[cur_selector].append(code_block)
                                         count_open = 0
                                     else:
                                         flag_sel_block = False
@@ -238,7 +250,10 @@ def css_work(file_path, cur_file_enc, all_used_tags, all_used_classes, all_used_
                                     flag_selector_found = True
                                     code_block = line[line.find("{"):]
                                     if code_block.find('}') != -1:
-                                        used_css[cur_selector] = code_block
+                                        if cur_selector not in used_css:
+                                            used_css[cur_selector] = [code_block]
+                                        else:
+                                            used_css[cur_selector].append(code_block)
                                         count_open = 0
                                     else:
                                         flag_sel_block = False
@@ -255,7 +270,10 @@ def css_work(file_path, cur_file_enc, all_used_tags, all_used_classes, all_used_
                     elif line.find('}') != -1 and count_open==1:
                         count_open = 0
                         code_block += line
-                        used_css[cur_selector] = code_block
+                        if cur_selector not in used_css:
+                            used_css[cur_selector] = [code_block]
+                        else:
+                            used_css[cur_selector].append(code_block)
                         flag_sel_block = True
     return used_css
 
@@ -265,8 +283,8 @@ def new_css(file_path, cur_file_enc, css_dictionary):
     file_path = file_path[:file_path.rfind('\\')+1] + '_' + file_path[file_path.rfind('\\')+1:]
     css_file = open (file_path, 'w', encoding=f'{cur_file_enc}')
     for cur_selector in css_dictionary:
-        cur_value = css_dictionary[cur_selector]
-        css_file.write(cur_selector + ' ' + cur_value)
+        for cur_value in css_dictionary[cur_selector]:
+            css_file.write(cur_selector + ' ' + cur_value)
     css_file.close()
     return None
 
@@ -303,18 +321,27 @@ def new_html(file_path, cur_file_enc, css_docs):
     return None
 
 def stats(count_css_processed):
-    """Вернуть статистику об обработанных css файлах"""
+    """Вернуть статистику об обработанных css файлах; если оптимизированный файл = 0kbytes, то скопировать исходный файл"""
 
     print('Размер css файлов:')
     base = []
     opt = []
     for css_file in count_css_processed:
         size = os.path.getsize(css_file)  # размер css файла до оптимизации
+        base_css = css_file
         css_file1 = css_file[css_file.rfind('\\')+1:]
         base.append(size/1024)
         print(f' {css_file1}: {round(size/1024, 2)} kbytes')
         css_file = css_file[:css_file.rfind('\\')+1] + '_' + css_file[css_file.rfind('\\')+1:]
         size = os.path.getsize(css_file)  # размер css файла после оптимизации
+        if size == 0:  # копируем исходный файл
+            enc_file = encoding(base_css)
+            new_css_file = open(css_file, 'w', encoding=f'{enc_file}')
+            with open(base_css, encoding=f'{enc_file}') as fbase:
+                for line in fbase:
+                    new_css_file.write(line)
+            new_css_file.close()
+            size = os.path.getsize(css_file)
         css_file1 = css_file[css_file.rfind('\\')+1:]
         opt.append(size/1024)
         print (f'{css_file1}: {round(size/1024, 2)} kbytes')
