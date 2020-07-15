@@ -334,7 +334,7 @@ def stats(count_css_processed):
         print(f' {css_file1}: {round(size/1024, 2)} kbytes')
         css_file = css_file[:css_file.rfind('\\')+1] + '_' + css_file[css_file.rfind('\\')+1:]
         size = os.path.getsize(css_file)  # размер css файла после оптимизации
-        if size == 0:  # копируем исходный файл
+        if size < 1024:  # копируем исходный файл
             enc_file = encoding(base_css)
             new_css_file = open(css_file, 'w', encoding=f'{enc_file}')
             with open(base_css, encoding=f'{enc_file}') as fbase:
