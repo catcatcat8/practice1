@@ -312,86 +312,87 @@ if __name__ == "__main__":
     try: 
         (sys.argv[1] and sys.argv[2])
     except IndexError:
-        print(_tmp)
+        html_path = r'D:\eDisk\ExsamServer\Script\Project\ExS37\HTML\templates'
+        css_path = r'D:\eDisk\ExsamServer\Script\Project\ExS37\HTML\css'
     else:
         html_path = sys.argv[1]  # папка или файл с html файлами
         css_path = sys.argv[2]  # папка с css файлами """
-        all_html_docs, all_css_docs = html_css_existence(html_path, css_path)
-        if all_html_docs and all_css_docs:  # если передали хотя бы 1 html файл и хотя бы 1 css файл
-            count_css_processed = []
-            all_tags = []
-            all_styles = []
-            all_classes = []
-            all_ids = []
-            for each_html_doc in all_html_docs:
-                all_used_tags = []
-                styles = []
-                all_used_classes = []
-                all_used_ids = []
-                cur_file_enc = encoding(each_html_doc)  # определяем кодировку файла
-                # --- Шаг 1
-                # Получение списка тегов из всех html документов
-                all_used_tags, err_event = html_tags(each_html_doc, cur_file_enc)
-                for each_tag in all_used_tags:
-                    if each_tag and each_tag not in all_tags:
-                        all_tags.append(each_tag)
-                # --- Шаг 2
-                # Получение списка всех подгружаемых каскадных таблиц
-                styles, err_event = css_styles(each_html_doc, cur_file_enc)
-                for each_style in styles:
-                    if each_style and each_style not in all_styles:
-                        all_styles.append(each_style)
-                # --- Шаг 3
-                # Получение списка классов и идентификаторов
-                all_used_classes = class_list(each_html_doc, cur_file_enc)  # список классов
-                for each_class in all_used_classes:
-                    if each_class and each_class not in all_classes:
-                        all_classes.append(each_class)
-                all_used_ids = id_list(each_html_doc, cur_file_enc)  # список идентификаторов
-                for each_id in all_used_ids:
-                    if each_id and each_id not in all_ids:
-                        all_ids.append(each_id)
-            # получен список тегов
-            print ("HTML tags:")
-            [print(x.upper()) for x in all_tags]
-            # получен список локальных стилей
-            print ("\nLocal CSS styles:")
-            [print(x) for x in all_styles]
-            # получен список идентификаторов
-            print ("\nID list:")
-            [print(x) for x in all_ids]
-            # получен список используемых классов
-            print ("\nClass list:")
-            [print(x) for x in all_classes]
-            # --- Шаг 4
-            # Обработка CSS документов
-            css_docs = []
-            for css_doc in all_styles:
-                flag_file_found = False
-                for real_css_doc in all_css_docs:
-                    if css_doc in real_css_doc:
-                        flag_file_found = True
-                        cur_file_enc = encoding(real_css_doc)
-                        css_docs.append(css_work(real_css_doc, cur_file_enc, all_tags, all_classes, all_ids))
-                        break
-                if not flag_file_found:
-                    print (f'Файл {css_doc} не был обработан, т.к. не находится в указанной директории')
-            # --- Шаг 5
-            # Создание минимизированных файлов
-            dict_num = 0
-            for css_doc in all_styles:
-                for real_css_doc in all_css_docs:
-                    if css_doc in real_css_doc:
-                        cur_file_enc = encoding(real_css_doc)
-                        new_css(real_css_doc, cur_file_enc, css_docs[dict_num])  # создаются минимизированные файлы css
-                        dict_num += 1
-                        break
-            for each_html_doc in all_html_docs:
-                cur_file_enc = encoding(each_html_doc)
-                new_html(each_html_doc, cur_file_enc, all_styles)  # создается новый html файл
-            # Вывод названия обработанных файлов
-            print(f'Обработано {len(count_css_processed)} CSS файла:')
-            [print(x) for x in count_css_processed]
-            stats(count_css_processed)
-        else:
-            print(_tmp)
+    all_html_docs, all_css_docs = html_css_existence(html_path, css_path)
+    if all_html_docs and all_css_docs:  # если передали хотя бы 1 html файл и хотя бы 1 css файл
+        count_css_processed = []
+        all_tags = []
+        all_styles = []
+        all_classes = []
+        all_ids = []
+        for each_html_doc in all_html_docs:
+            all_used_tags = []
+            styles = []
+            all_used_classes = []
+            all_used_ids = []
+            cur_file_enc = encoding(each_html_doc)  # определяем кодировку файла
+            # --- Шаг 1
+            # Получение списка тегов из всех html документов
+            all_used_tags, err_event = html_tags(each_html_doc, cur_file_enc)
+            for each_tag in all_used_tags:
+                if each_tag and each_tag not in all_tags:
+                    all_tags.append(each_tag)
+            # --- Шаг 2
+            # Получение списка всех подгружаемых каскадных таблиц
+            styles, err_event = css_styles(each_html_doc, cur_file_enc)
+            for each_style in styles:
+                if each_style and each_style not in all_styles:
+                    all_styles.append(each_style)
+            # --- Шаг 3
+            # Получение списка классов и идентификаторов
+            all_used_classes = class_list(each_html_doc, cur_file_enc)  # список классов
+            for each_class in all_used_classes:
+                if each_class and each_class not in all_classes:
+                    all_classes.append(each_class)
+            all_used_ids = id_list(each_html_doc, cur_file_enc)  # список идентификаторов
+            for each_id in all_used_ids:
+                if each_id and each_id not in all_ids:
+                    all_ids.append(each_id)
+        # получен список тегов
+        print ("HTML tags:")
+        [print(x.upper()) for x in all_tags]
+        # получен список локальных стилей
+        print ("\nLocal CSS styles:")
+        [print(x) for x in all_styles]
+        # получен список идентификаторов
+        print ("\nID list:")
+        [print(x) for x in all_ids]
+        # получен список используемых классов
+        print ("\nClass list:")
+        [print(x) for x in all_classes]
+        # --- Шаг 4
+        # Обработка CSS документов
+        css_docs = []
+        for css_doc in all_styles:
+            flag_file_found = False
+            for real_css_doc in all_css_docs:
+                if css_doc in real_css_doc:
+                    flag_file_found = True
+                    cur_file_enc = encoding(real_css_doc)
+                    css_docs.append(css_work(real_css_doc, cur_file_enc, all_tags, all_classes, all_ids))
+                    break
+            if not flag_file_found:
+                print (f'Файл {css_doc} не был обработан, т.к. не находится в указанной директории')
+        # --- Шаг 5
+        # Создание минимизированных файлов
+        dict_num = 0
+        for css_doc in all_styles:
+            for real_css_doc in all_css_docs:
+                if css_doc in real_css_doc:
+                    cur_file_enc = encoding(real_css_doc)
+                    new_css(real_css_doc, cur_file_enc, css_docs[dict_num])  # создаются минимизированные файлы css
+                    dict_num += 1
+                    break
+        for each_html_doc in all_html_docs:
+            cur_file_enc = encoding(each_html_doc)
+            new_html(each_html_doc, cur_file_enc, all_styles)  # создается новый html файл
+        # Вывод названия обработанных файлов
+        print(f'Обработано {len(count_css_processed)} CSS файла:')
+        [print(x) for x in count_css_processed]
+        stats(count_css_processed)
+    else:
+        print(_tmp)
