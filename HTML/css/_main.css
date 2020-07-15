@@ -215,6 +215,7 @@ label {
     visibility: visible;
     opacity: 1;
   }
+}
 .panel-heading[data-isanswered] {
   background-color: #a7a6ce;
   color: aliceblue;

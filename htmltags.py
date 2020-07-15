@@ -162,28 +162,31 @@ def css_work(file_path, cur_file_enc, all_used_tags, all_used_classes, all_used_
     used_css = {}  # словарь, хранящий весь значимый код css
     flag_sel_block = True  # true - смотрим селектор; false - смотрим блок
     flag_selector_found = False  # true - найден селектор; false - не найден
+    count_open = 0
     with open (file_path, encoding="utf8") as f:
         for line in f:
             if flag_sel_block:
-                if (flag_selector_found) and (line.find('}') != -1):  # проверка на {{}} - вложенные селекторы
-                    code_block += line
                 if (line.find("{") != -1) and (line.find("/*") == -1):
                     cur_selector = line[:line.find("{")].strip()
                     flag_selector_found = False
 
                     # < --- Глобальные селекторы
                     if cur_selector.find('@') != -1:  # если селектор - правило с '@'
+                        count_open += 1
                         flag_selector_found = True
                         code_block = line[line.find("{"):]
                         if code_block.find('}') != -1:
                             used_css[cur_selector] = code_block
+                            count_open = 0
                         else:
                             flag_sel_block = False
                     if not flag_selector_found and cur_selector == '*':  # если селектор - "*"
+                        count_open += 1
                         flag_selector_found = True
                         code_block = line[line.find("{"):]
                         if code_block.find('}') != -1:
                             used_css[cur_selector] = code_block
+                            count_open = 0
                         else:
                             flag_sel_block = False
 
@@ -193,10 +196,12 @@ def css_work(file_path, cur_file_enc, all_used_tags, all_used_classes, all_used_
                             # регулярное выражение проверки класса
                             reg_exp = r'\.' + cur_class + r'($|:{1,2}.+$| *\,.+$| *\..+$|\[.+$| *\~.+$| *>.+$| *\+.+$)'
                             if re.search(reg_exp, cur_selector) is not None:
+                                count_open += 1
                                 flag_selector_found = True
                                 code_block = line[line.find("{"):]
                                 if code_block.find('}') != -1:
                                     used_css[cur_selector] = code_block
+                                    count_open = 0
                                 else:
                                     flag_sel_block = False
                             if flag_selector_found:  # селектор найден, больше не просматриваем классы
@@ -207,10 +212,12 @@ def css_work(file_path, cur_file_enc, all_used_tags, all_used_classes, all_used_
                             # регулярное выражение проверки тега
                             reg_exp = r'([^\w\.]|^)' + cur_tag + r'($|:{1,2}.+$| *\,.+$| ?\..+$|\[.+$| *\~.+$| *>.+$| *\+.+$| +.+$)'
                             if re.search(reg_exp, cur_selector_tag) is not None:
+                                count_open += 1
                                 flag_selector_found = True
                                 code_block = line[line.find("{"):]
                                 if code_block.find('}') != -1:
                                     used_css[cur_selector] = code_block
+                                    count_open = 0
                                 else:
                                     flag_sel_block = False
                             if flag_selector_found:  # селектор найден, больше не просматриваем теги
@@ -220,18 +227,26 @@ def css_work(file_path, cur_file_enc, all_used_tags, all_used_classes, all_used_
                             # регулярное выражение проверки идентификатора
                             reg_exp = r'\#' + cur_id + r'($|:{1,2}.+$| *\,.+$|\[.+$| *\~.+$| *>.+$| *\+.+$| +.+$)'
                             if re.search(reg_exp, cur_selector) is not None:
+                                count_open += 1
                                 flag_selector_found = True
                                 code_block = line[line.find("{"):]
                                 if code_block.find('}') != -1:
                                     used_css[cur_selector] = code_block
+                                    count_open = 0
                                 else:
                                     flag_sel_block = False
                             if flag_selector_found:  # селектор найден, больше не просматриваем идентификаторы
                                 break
-            else: 
+            else:
+                if line.find('{') != -1:
+                    count_open += 1 
                 if line.find('}') == -1:
                     code_block += line
-                else:
+                elif line.find('}') != -1 and count_open>1:
+                    count_open -= 1
+                    code_block += line
+                elif line.find('}') != -1 and count_open==1:
+                    count_open = 0
                     code_block += line
                     used_css[cur_selector] = code_block
                     flag_sel_block = True
@@ -312,8 +327,8 @@ if __name__ == "__main__":
     try: 
         (sys.argv[1] and sys.argv[2])
     except IndexError:
-        html_path = r'D:\eDisk\ExsamServer\Script\Project\ExS37\HTML\templates'
-        css_path = r'D:\eDisk\ExsamServer\Script\Project\ExS37\HTML\css'
+        html_path = r'C:\Users\xiaomi\Documents\GitHub\practice1\HTML'
+        css_path = r'C:\Users\xiaomi\Documents\GitHub\practice1\HTML\css'
     else:
         html_path = sys.argv[1]  # папка или файл с html файлами
         css_path = sys.argv[2]  # папка с css файлами """
