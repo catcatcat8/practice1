@@ -316,8 +316,6 @@ if __name__ == "__main__":
     else:
         html_path = sys.argv[1]  # папка или файл с html файлами
         css_path = sys.argv[2]  # папка с css файлами """
-        html_path = r'C:\Users\xiaomi\Documents\GitHub\practice1\HTML'
-        css_path = r'C:\Users\xiaomi\Documents\GitHub\practice1\HTML\css'
         all_html_docs, all_css_docs = html_css_existence(html_path, css_path)
         if all_html_docs and all_css_docs:  # если передали хотя бы 1 html файл и хотя бы 1 css файл
             count_css_processed = []
