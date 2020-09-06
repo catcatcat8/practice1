@@ -1,0 +1,141 @@
+---HTML tags---
+META
+BODY
+H2
+P
+SPAN
+DIV
+UL
+LI
+HTML
+HEAD
+TITLE
+LINK
+SCRIPT
+STYLE
+H4
+A
+TABLE
+TR
+TD
+I
+H3
+INPUT
+BR
+FORM
+B
+BR
+TEXTAREA
+OL
+LABEL
+
+---Local CSS styles---
+css\util.css 
+css\main.css 
+css\font-awesome.min.css 
+
+---Id list---
+section_start 
+accordion 
+ques 
+collapse 
+sendresult 
+aCode 
+autoriz 
+myCarousel 
+card 
+-1 
+-2 
+-3 
+
+---Class list---
+input80 
+m-b-20 
+fs-20 
+wrap-login90 
+p-b-10 
+m-t-20 
+m-t-40 
+m-b-10 
+m-l-10 
+pc 
+fs-12 
+wrap-login100 
+p-t-10 
+p-b-90 
+ab-b-l 
+limiter 
+container-login100 
+p-b-20 
+login100-form-title 
+fs-25 
+m-b-50 
+container 
+container-fluid 
+input90 
+Ex-W 
+result 
+panel-group 
+panel 
+panel-default 
+panel-heading 
+panel-title 
+panel-collapse 
+collapse 
+panel-body 
+m-b-15 
+fs-15 
+m-b-12 
+quesCard 
+fa 
+fa-circle-o 
+fa-2x 
+m-r-10 
+answer-label 
+container-login100-form-btn 
+m-t-17 
+login100-form-btn 
+input 
+Adv 
+Title 
+container-login100-222 
+carousel 
+slide 
+carousel-indicators 
+active 
+carousel-inner 
+item 
+left 
+carousel-control 
+glyphicon 
+glyphicon-chevron-left 
+sr-only 
+right 
+glyphicon-chevron-right 
+login100-form 
+validate-form 
+flex-sb 
+flex-w 
+wrap-input100 
+validate-input 
+m-b-16 
+input100 
+m-t-15 
+m-t-30 
+p-t-50 
+p-b-51 
+
+Обработано 3 CSS файла:
+C:\Users\xiaomi\Documents\GitHub\practice1\HTML\css\util.css
+C:\Users\xiaomi\Documents\GitHub\practice1\HTML\css\main.css
+C:\Users\xiaomi\Documents\GitHub\practice1\HTML\css\font-awesome.min.css
+
+Размер css файлов:
+ util.css: 84.76 kbytes
+_util.css: 1.75 kbytes
+ main.css: 9.87 kbytes
+_main.css: 4.49 kbytes
+ font-awesome.min.css: 30.28 kbytes
+_font-awesome.min.css: 30.28 kbytes
+
+Оптимизация составила 70.76%

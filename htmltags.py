@@ -28,12 +28,14 @@ def html_css_existence(html_path, css_path):
                 all_html_docs.append(only_path+only_file)
         else: 
             print('Html файл не найден!')
+            report_file.write("Html файл не найден!")
     else:
         if os.path.exists(html_path):
             listFiles = os.listdir(html_path)
             all_html_docs = ([f'{html_path}\\' + x for x in listFiles if (x.split(".")[-1] in ["html", "htm"] and x.split(".")[-2][0] not in ["_"])])
         else:
             print('Директория с файлами html не найдена!')
+            report_file.write("Директория с файлами html не найдена!")
     if all_html_docs:  # если список переданных html файлов не пустой проверяем css
         if css_path.split('\\')[-1].find('.css') != -1:
             only_path = css_path[:css_path.rfind('\\')+1]
@@ -44,15 +46,17 @@ def html_css_existence(html_path, css_path):
                     all_css_docs.append(only_path+only_file)
             else: 
                 print('CSS файл не найден!')
+                report_file.write("CSS файл не найден!")
         else:
             if os.path.exists(css_path):
                 listFiles = os.listdir(css_path)
                 all_css_docs = ([f'{css_path}\\' + x for x in listFiles if (x.split(".")[-1] in ['css'] and x.split(".")[-2][0] not in ["_"])])
             else:
                 print('Директория с файлами css не найдена!')
+                report_file.write("Директория с файлами css не найдена!")
     return all_html_docs, all_css_docs
 
-def encoding(file_path):
+def my_encoding(file_path):
     """Вернуть кодировку файла"""
 
     detector = UniversalDetector()
@@ -324,6 +328,7 @@ def stats(count_css_processed):
     """Вернуть статистику об обработанных css файлах; если оптимизированный файл = 0kbytes, то скопировать исходный файл"""
 
     print('Размер css файлов:')
+    report_file.write("\nРазмер css файлов:\n")
     base = []
     opt = []
     for css_file in count_css_processed:
@@ -332,10 +337,11 @@ def stats(count_css_processed):
         css_file1 = css_file[css_file.rfind('\\')+1:]
         base.append(size/1024)
         print(f' {css_file1}: {round(size/1024, 2)} kbytes')
+        report_file.write(f' {css_file1}: {round(size/1024, 2)} kbytes\n')
         css_file = css_file[:css_file.rfind('\\')+1] + '_' + css_file[css_file.rfind('\\')+1:]
         size = os.path.getsize(css_file)  # размер css файла после оптимизации
         if size < 100:  # копируем исходный файл
-            enc_file = encoding(base_css)
+            enc_file = my_encoding(base_css)
             new_css_file = open(css_file, 'w', encoding=f'{enc_file}')
             with open(base_css, encoding=f'{enc_file}') as fbase:
                 for line in fbase:
@@ -345,8 +351,10 @@ def stats(count_css_processed):
         css_file1 = css_file[css_file.rfind('\\')+1:]
         opt.append(size/1024)
         print (f'{css_file1}: {round(size/1024, 2)} kbytes')
+        report_file.write(f'{css_file1}: {round(size/1024, 2)} kbytes\n')
     percent = round((1-sum(opt)/sum(base))*100, 2)
     print(f'Оптимизация составила {percent}%')
+    report_file.write(f'\nОптимизация составила {percent}%\n')
 
     return None
 
@@ -366,6 +374,7 @@ if __name__ == "__main__":
     else:
         html_path = sys.argv[1]  # папка или файл с html файлами
         css_path = sys.argv[2]  # папка с css файлами """
+    report_file = open("report.txt", "w", encoding="utf-8")  # создание файла с информацией о работе скрипта
     all_html_docs, all_css_docs = html_css_existence(html_path, css_path)
     if all_html_docs and all_css_docs:  # если передали хотя бы 1 html файл и хотя бы 1 css файл
         count_css_processed = []
@@ -378,7 +387,7 @@ if __name__ == "__main__":
             styles = []
             all_used_classes = []
             all_used_ids = []
-            cur_file_enc = encoding(each_html_doc)  # определяем кодировку файла
+            cur_file_enc = my_encoding(each_html_doc)  # определяем кодировку файла
             # --- Шаг 1
             # Получение списка тегов из всех html документов
             all_used_tags, err_event = html_tags(each_html_doc, cur_file_enc)
@@ -402,17 +411,25 @@ if __name__ == "__main__":
                 if each_id and each_id not in all_ids:
                     all_ids.append(each_id)
         # получен список тегов
-        print ("HTML tags:")
+        print ("HTML tags:\n")
         [print(x.upper()) for x in all_tags]
+        report_file.write("---HTML tags---\n")
+        [report_file.write(f'{x.upper()}\n') for x in all_tags]
         # получен список локальных стилей
         print ("\nLocal CSS styles:")
         [print(x) for x in all_styles]
+        report_file.write("\n---Local CSS styles---")
+        [report_file.write(f'\n{x} ') for x in all_styles]
         # получен список идентификаторов
         print ("\nID list:")
         [print(x) for x in all_ids]
+        report_file.write("\n\n---Id list---")
+        [report_file.write(f'\n{x} ') for x in all_ids]
         # получен список используемых классов
         print ("\nClass list:")
         [print(x) for x in all_classes]
+        report_file.write("\n\n---Class list---")
+        [report_file.write(f'\n{x} ') for x in all_classes]
         # --- Шаг 4
         # Обработка CSS документов
         css_docs = []
@@ -421,27 +438,31 @@ if __name__ == "__main__":
             for real_css_doc in all_css_docs:
                 if css_doc in real_css_doc:
                     flag_file_found = True
-                    cur_file_enc = encoding(real_css_doc)
+                    cur_file_enc = my_encoding(real_css_doc)
                     css_docs.append(css_work(real_css_doc, cur_file_enc, all_tags, all_classes, all_ids))
                     break
             if not flag_file_found:
-                print (f'Файл {css_doc} не был обработан, т.к. не находится в указанной директории')
+                print(f'Файл {css_doc} не был обработан, т.к. не находится в указанной директории')
+                report_file.write(f'Файл {css_doc} не был обработан, т.к. не находится в указанной директории\n')
         # --- Шаг 5
         # Создание минимизированных файлов
         dict_num = 0
         for css_doc in all_styles:
             for real_css_doc in all_css_docs:
                 if css_doc in real_css_doc:
-                    cur_file_enc = encoding(real_css_doc)
+                    cur_file_enc = my_encoding(real_css_doc)
                     new_css(real_css_doc, cur_file_enc, css_docs[dict_num])  # создаются минимизированные файлы css
                     dict_num += 1
                     break
         for each_html_doc in all_html_docs:
-            cur_file_enc = encoding(each_html_doc)
+            cur_file_enc = my_encoding(each_html_doc)
             new_html(each_html_doc, cur_file_enc, all_styles)  # создается новый html файл
         # Вывод названия обработанных файлов
         print(f'Обработано {len(count_css_processed)} CSS файла:')
         [print(x) for x in count_css_processed]
+        report_file.write(f'\n\nОбработано {len(count_css_processed)} CSS файла:\n')
+        [report_file.write(f'{x}\n') for x in count_css_processed]
         stats(count_css_processed)
     else:
         print(_tmp)
+        report_file.write(_tmp)
