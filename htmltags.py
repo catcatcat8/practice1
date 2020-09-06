@@ -466,3 +466,4 @@ if __name__ == "__main__":
     else:
         print(_tmp)
         report_file.write(_tmp)
+    report_file.close()
