@@ -1,4 +1,4 @@
-# Лебедев Евгений Получение оптимизационного файла (минимизация структуры подгружаемых каскадных таблиц в HTML)
+# Лебедев Евгений: Функции программы ускорения работы веб-сайтов
 import os
 import sys
 import re
@@ -51,6 +51,14 @@ def html_css_existence(html_path, css_path):
             if os.path.exists(css_path):
                 listFiles = os.listdir(css_path)
                 all_css_docs = ([f'{css_path}\\' + x for x in listFiles if (x.split(".")[-1] in ['css'] and x.split(".")[-2][0] not in ["_"])])
+                ind = 0
+                dell = []
+                for i in all_css_docs:
+                    if i.find('_') != -1:
+                        dell.append(ind)
+                    ind += 1
+                for elem in dell:
+                    all_css_docs.pop(elem)
             else:
                 print('Директория с файлами css не найдена!')
                 report_file.write("Директория с файлами css не найдена!")
