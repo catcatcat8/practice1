@@ -1,8 +1,7 @@
 # Лебедев Евгений: Программа ускорения работы веб-сайтов
 import sys
-import mainpage, reference, mainmenu, see_tags, see_classes, see_ids, see_boost
+from forms import mainpage, reference, mainmenu, see_tags, see_classes, see_ids, see_boost
 import logic
-from itertools import groupby
 import pyqtgraph as pg 
 from pyqtgraph import PlotWidget
 from PyQt5 import QtWidgets
