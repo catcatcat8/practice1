@@ -27,26 +27,26 @@ class Ui_MainWindow(object):
         self.label_2.setStyleSheet("color: rgb(255, 255, 255);")
         self.label_2.setObjectName("label_2")
         self.textBrowser = QtWidgets.QTextBrowser(self.centralwidget)
-        self.textBrowser.setGeometry(QtCore.QRect(60, 200, 451, 291))
+        self.textBrowser.setGeometry(QtCore.QRect(40, 120, 401, 291))
         self.textBrowser.setStyleSheet("background-color: rgb(255, 255, 255);\n"
 "font: 10pt \"MS Shell Dlg 2\";")
         self.textBrowser.setObjectName("textBrowser")
         self.pushButton_6 = QtWidgets.QPushButton(self.centralwidget)
-        self.pushButton_6.setGeometry(QtCore.QRect(60, 130, 491, 41))
+        self.pushButton_6.setGeometry(QtCore.QRect(40, 430, 671, 41))
         self.pushButton_6.setStyleSheet("background-color: rgb(170, 0, 0);\n"
 "color: rgb(255, 255, 255);\n"
 "font: 10pt \"MS Shell Dlg 2\";")
         self.pushButton_6.setIconSize(QtCore.QSize(40, 40))
         self.pushButton_6.setObjectName("pushButton_6")
         self.pushButton_5 = QtWidgets.QPushButton(self.centralwidget)
-        self.pushButton_5.setGeometry(QtCore.QRect(760, 440, 181, 41))
+        self.pushButton_5.setGeometry(QtCore.QRect(740, 430, 181, 41))
         self.pushButton_5.setStyleSheet("background-color: rgb(168, 193, 221);\n"
 "font: 10pt \"MS Shell Dlg 2\";\n"
 "color: rgb(0, 0, 0);")
         self.pushButton_5.setIconSize(QtCore.QSize(40, 40))
         self.pushButton_5.setObjectName("pushButton_5")
-        self.graphicsView = QtWidgets.QGraphicsView(self.centralwidget)
-        self.graphicsView.setGeometry(QtCore.QRect(560, 200, 341, 221))
+        self.graphicsView = PlotWidget(self.centralwidget)
+        self.graphicsView.setGeometry(QtCore.QRect(470, 120, 451, 291))
         self.graphicsView.setStyleSheet("background-color: rgb(255, 255, 255);")
         self.graphicsView.setObjectName("graphicsView")
         MainWindow.setCentralWidget(self.centralwidget)
@@ -68,3 +68,4 @@ class Ui_MainWindow(object):
         self.label_2.setText(_translate("MainWindow", "<html><head/><body><p><span style=\" font-size:12pt;\">- Оптимизированные файлы будут лежать по тому же пути, что и исходные.<br/>- Оптимизированные файлы содержат префикс &quot;_&quot; в названии.</span></p></body></html>"))
         self.pushButton_6.setText(_translate("MainWindow", "Ускорить работу веб-сайта"))
         self.pushButton_5.setText(_translate("MainWindow", "Назад"))
+from pyqtgraph import PlotWidget

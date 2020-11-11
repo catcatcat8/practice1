@@ -52,9 +52,9 @@
    <widget class="QTextBrowser" name="textBrowser">
     <property name="geometry">
      <rect>
-      <x>60</x>
-      <y>200</y>
-      <width>451</width>
+      <x>40</x>
+      <y>120</y>
+      <width>401</width>
       <height>291</height>
      </rect>
     </property>
@@ -66,9 +66,9 @@ font: 10pt &quot;MS Shell Dlg 2&quot;;</string>
    <widget class="QPushButton" name="pushButton_6">
     <property name="geometry">
      <rect>
-      <x>60</x>
-      <y>130</y>
-      <width>491</width>
+      <x>40</x>
+      <y>430</y>
+      <width>671</width>
       <height>41</height>
      </rect>
     </property>
@@ -90,8 +90,8 @@ font: 10pt &quot;MS Shell Dlg 2&quot;;</string>
    <widget class="QPushButton" name="pushButton_5">
     <property name="geometry">
      <rect>
-      <x>760</x>
-      <y>440</y>
+      <x>740</x>
+      <y>430</y>
       <width>181</width>
       <height>41</height>
      </rect>
@@ -111,13 +111,13 @@ color: rgb(0, 0, 0);</string>
      </size>
     </property>
    </widget>
-   <widget class="QGraphicsView" name="graphicsView">
+   <widget class="PlotWidget" name="graphicsView">
     <property name="geometry">
      <rect>
-      <x>560</x>
-      <y>200</y>
-      <width>341</width>
-      <height>221</height>
+      <x>470</x>
+      <y>120</y>
+      <width>451</width>
+      <height>291</height>
      </rect>
     </property>
     <property name="styleSheet">
@@ -137,6 +137,13 @@ color: rgb(0, 0, 0);</string>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>PlotWidget</class>
+   <extends>QGraphicsView</extends>
+   <header>pyqtgraph</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

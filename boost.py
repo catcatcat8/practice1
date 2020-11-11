@@ -1,14 +1,12 @@
-# Лебедев Евгений: Интерфейс программы ускорения работы веб-сайтов
+# Лебедев Евгений: Программа ускорения работы веб-сайтов
 import sys
 import mainpage, reference, mainmenu, see_tags, see_classes, see_ids, see_boost
 import logic
-from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
-from matplotlib.figure import Figure
-import matplotlib.pyplot as plt
-import numpy as np
 from itertools import groupby
+import pyqtgraph as pg 
+from pyqtgraph import PlotWidget
 from PyQt5 import QtWidgets
-from PyQt5.QtWidgets import QWidget, QMessageBox, QApplication, QFileDialog, QErrorMessage, QSizePolicy
+from PyQt5.QtWidgets import QWidget, QMessageBox, QApplication, QFileDialog, QErrorMessage, QSizePolicy, QVBoxLayout, QDialog
 from PyQt5.QtGui import QIcon, QFont
 from PyQt5.QtCore import QCoreApplication
 
@@ -19,7 +17,8 @@ html_path = ''
 css_path = ''
 statistics = ''
 count_css_processed = []
-optimized = 0
+optimized_base = []
+optimized_opt = []
 
 class ExampleApp(QtWidgets.QMainWindow, mainpage.Ui_MainWindow):
 
@@ -33,7 +32,7 @@ class ExampleApp(QtWidgets.QMainWindow, mainpage.Ui_MainWindow):
     
     def closeEvent(self, event):
  
-        reply = QMessageBox.question(self, 'Message',
+        reply = QMessageBox.question(self, 'Quit',
             "Are you sure to quit?", QMessageBox.Yes |
             QMessageBox.No, QMessageBox.No)
 
@@ -172,6 +171,7 @@ class SeeTagsApp(QtWidgets.QMainWindow, see_tags.Ui_MainWindow):
             msg = QMessageBox()
             msg.setIcon(QMessageBox.Critical)
             msg.setText("Не найдено ни одного HTML-тега!")
+            msg.setInformativeText('Проверьте правильность выбора HTML/CSS файлов сайта...')
             msg.setWindowTitle("Error")
             msg.exec_()
 
@@ -252,7 +252,8 @@ class SeeBoostApp(QtWidgets.QMainWindow, see_boost.Ui_MainWindow):
         self.setWindowIcon(QIcon('logo.png'))
         self.pushButton_5.clicked.connect(self.close)
         self.pushButton_6.clicked.connect(self.boosting)
-        # self.MyUI()
+           
+        
 
     def boosting(self):
         self.textBrowser.setText("")
@@ -352,8 +353,26 @@ class SeeBoostApp(QtWidgets.QMainWindow, see_boost.Ui_MainWindow):
             "font: 10pt \"MS Shell Dlg 2\";\n"
             "color: rgb(255, 255, 255);")
 
-            global optimized
-            optimized = logic.optimized
+            global optimized_base, optimized_opt
+            optimized_base = logic.optimized_base
+            optimized_opt = logic.optimized_opt
+
+            xx = range(len(optimized_base))
+            new_x = []
+            for i in xx:
+                new_x.append(i+1)
+            xx = new_x
+            self.graphicsView.addLegend(offset=(100, 30))
+            self.graphicsView.setXRange(1, len(optimized_base))
+
+            self.graphicsView.plot(xx, optimized_base, pen='r', symbol ='x', 
+            symbolPen = 'r', symbolBrush = 0.1, name ='Исходные файлы')
+            self.graphicsView.plot(xx, optimized_opt, pen='g', symbol ='o',
+            symbolPen = 'g', symbolBrush = 0.1, name = 'Оптимизированные файлы')
+
+            self.graphicsView.setLabel('left', 'Размер файлов', units ='kbytes')
+            self.graphicsView.setLabel('bottom', 'Номер файла')
+            self.graphicsView.showGrid(x = True, y = True)
             
         else:
             msg = QMessageBox()
@@ -363,28 +382,6 @@ class SeeBoostApp(QtWidgets.QMainWindow, see_boost.Ui_MainWindow):
             msg.exec_()
             report_file.write(_tmp)
         report_file.close()
-
-    def MyUI(self):
-        
-        canvas = Canvas(self, width=8, height=4)
-        canvas.move(0,0)
-
-class Canvas(FigureCanvas):
-    def __init__(self, parent = None, width = 5, height = 5, dpi = 100):
-        fig = Figure(figsize=(width, height), dpi=dpi)
-        self.axes = fig.add_subplot(111)
- 
-        FigureCanvas.__init__(self, fig)
-        self.setParent(parent)
- 
-        self.plot()
- 
- 
-    def plot(self):
-        x = np.array([50, 30,40])
-        labels = ["Apples", "Bananas", "Melons"]
-        ax = self.figure.add_subplot(111)
-        ax.pie(x, labels=labels)
 
 def main():
     app = QtWidgets.QApplication(sys.argv)  # Новый экземпляр QApplication

@@ -21,7 +21,7 @@
     <property name="geometry">
      <rect>
       <x>410</x>
-      <y>20</y>
+      <y>0</y>
       <width>631</width>
       <height>41</height>
      </rect>
@@ -36,26 +36,27 @@
    <widget class="QLabel" name="label_2">
     <property name="geometry">
      <rect>
-      <x>40</x>
-      <y>90</y>
-      <width>891</width>
-      <height>311</height>
+      <x>20</x>
+      <y>50</y>
+      <width>921</width>
+      <height>391</height>
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">background-color: rgb(255, 255, 255);</string>
+     <string notr="true">background-color: rgb(0, 165, 221);
+</string>
     </property>
     <property name="text">
-     <string>тут будет вся справка</string>
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;Назначением данной программы является ускорение работы вашего веб-сайта за счет уменьшения &lt;br/&gt;размера CSS-файлов верстки сайта.&lt;br/&gt;В результате успешного ускорения работы вашего веб-сайта: &lt;br/&gt;- все неиспользуемые CSS селекторы будут удалены из CSS-файлов&lt;br/&gt;- оптимизированные файлы будут находиться в той же директории, что и исходные файлы верстки&lt;br/&gt;- оптимизированные файлы будут иметь префикс &amp;quot;_&amp;quot; в названии.&lt;br/&gt;&lt;br/&gt;Для активации функций программы в меню функций программы Вам нужно выбрать:&lt;br/&gt;- директорию с HTML-файлами верстки&lt;br/&gt;- директорию с CSS-файлами верстки&lt;br/&gt;При успешном выборе кнопки выбора загорятся зеленым цветом и Вам будут доступны функции &lt;br/&gt;программы:&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;- Для запуска процесса ускорения вашего веб-сайта нажмите кнопку &amp;quot;Ускорение работы сайта&amp;quot; в главном меню.&lt;br/&gt;- Для получения списка HTML-тегов сайта нажмите кнопку &amp;quot;Просмотр HTML-тегов веб-сайта&amp;quot; в главном меню.&lt;br/&gt;- Для получения списка CSS-классов сайта нажмите кнопку &amp;quot;Просмотр CSS-классов веб-сайта&amp;quot; в главном меню.&lt;br/&gt;- Для получения списка CSS-идентификаторов сайта нажмите кнопку &amp;quot;Просмотр CSS-идентификаторов веб-сайта&amp;quot; &lt;br/&gt;в главном меню.&lt;br/&gt;После чего, нажмите кнопку активации действия в открывшейся форме.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
    </widget>
    <widget class="QPushButton" name="pushButton">
     <property name="geometry">
      <rect>
       <x>700</x>
-      <y>420</y>
+      <y>440</y>
       <width>231</width>
-      <height>61</height>
+      <height>41</height>
      </rect>
     </property>
     <property name="styleSheet">

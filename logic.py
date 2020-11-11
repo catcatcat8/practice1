@@ -6,7 +6,8 @@ from chardet.universaldetector import UniversalDetector
 
 count_css_processed = []
 stats_text = ''
-optimized = 0
+optimized_base = []
+optimized_opt = []
 
 class Htmlobject:
     """Класс, описывающий объект HTML"""
@@ -341,19 +342,21 @@ def stats(count_css_processed):
     report_file = open("report.txt", "a", encoding="utf-8")
     print('Размер css файлов:')
     global stats_text
-    global optimized
+    global optimized_base
+    global optimized_opt
     stats_text = ''
     stats_text += '\nРазмер css файлов:\n'
     report_file.write("\nРазмер css файлов:\n")
     base = []
     opt = []
+    ind = 1
     for css_file in count_css_processed:
         size = os.path.getsize(css_file)  # размер css файла до оптимизации
         base_css = css_file
         css_file1 = css_file[css_file.rfind('\\')+1:]
         base.append(size/1024)
         print(f' {css_file1}: {round(size/1024, 2)} kbytes')
-        stats_text += f' {css_file1}: {round(size/1024, 2)} kbytes\n'
+        stats_text += f'#{ind}  {css_file1}: {round(size/1024, 2)} kbytes\n'
         report_file.write(f' {css_file1}: {round(size/1024, 2)} kbytes\n')
         css_file = css_file[:css_file.rfind('\\')+1] + '_' + css_file[css_file.rfind('\\')+1:]
         size = os.path.getsize(css_file)  # размер css файла после оптимизации
@@ -368,10 +371,12 @@ def stats(count_css_processed):
         css_file1 = css_file[css_file.rfind('\\')+1:]
         opt.append(size/1024)
         print (f'{css_file1}: {round(size/1024, 2)} kbytes')
-        stats_text += f'{css_file1}: {round(size/1024, 2)} kbytes\n'
+        stats_text += f'    {css_file1}: {round(size/1024, 2)} kbytes\n'
         report_file.write(f'{css_file1}: {round(size/1024, 2)} kbytes\n')
+        ind += 1
     percent = round((1-sum(opt)/sum(base))*100, 2)
-    optimized = percent
+    optimized_base = base
+    optimized_opt = opt
     print(f'Оптимизация составила {percent}%')
     stats_text += f'Оптимизация составила {percent}%\n'
     stats_text = stats_text[:-1]

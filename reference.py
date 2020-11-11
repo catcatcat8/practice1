@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'C:/Users/xiaomi/Documents/GitHub/practice1/reference.ui'
+# Form implementation generated from reading ui file 'C:/Users/xiaomi/Documents/GitHub/practice1/qt/reference.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.1
 #
@@ -19,15 +19,16 @@ class Ui_MainWindow(object):
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.label = QtWidgets.QLabel(self.centralwidget)
-        self.label.setGeometry(QtCore.QRect(410, 20, 631, 41))
+        self.label.setGeometry(QtCore.QRect(410, 0, 631, 41))
         self.label.setStyleSheet("color: rgb(255, 255, 255);")
         self.label.setObjectName("label")
         self.label_2 = QtWidgets.QLabel(self.centralwidget)
-        self.label_2.setGeometry(QtCore.QRect(40, 90, 891, 311))
-        self.label_2.setStyleSheet("background-color: rgb(255, 255, 255);")
+        self.label_2.setGeometry(QtCore.QRect(20, 50, 921, 391))
+        self.label_2.setStyleSheet("background-color: rgb(0, 165, 221);\n"
+"")
         self.label_2.setObjectName("label_2")
         self.pushButton = QtWidgets.QPushButton(self.centralwidget)
-        self.pushButton.setGeometry(QtCore.QRect(700, 420, 231, 61))
+        self.pushButton.setGeometry(QtCore.QRect(700, 440, 231, 41))
         self.pushButton.setStyleSheet("background-color: rgb(255, 255, 255);\n"
 "font: 10pt \"MS Shell Dlg 2\";\n"
 "color: rgb(0, 0, 0);")
@@ -49,5 +50,5 @@ class Ui_MainWindow(object):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
         self.label.setText(_translate("MainWindow", "<html><head/><body><p><span style=\" font-size:18pt;\">Справка</span></p></body></html>"))
-        self.label_2.setText(_translate("MainWindow", "тут будет вся справка"))
+        self.label_2.setText(_translate("MainWindow", "<html><head/><body><p><span style=\" font-size:10pt;\">Назначением данной программы является ускорение работы вашего веб-сайта за счет уменьшения <br/>размера CSS-файлов верстки сайта.<br/>В результате успешного ускорения работы вашего веб-сайта: <br/>- все неиспользуемые CSS селекторы будут удалены из CSS-файлов<br/>- оптимизированные файлы будут находиться в той же директории, что и исходные файлы верстки<br/>- оптимизированные файлы будут иметь префикс &quot;_&quot; в названии.<br/><br/>Для активации функций программы в меню функций программы Вам нужно выбрать:<br/>- директорию с HTML-файлами верстки<br/>- директорию с CSS-файлами верстки<br/>При успешном выборе кнопки выбора загорятся зеленым цветом и Вам будут доступны функции <br/>программы:</span></p><p><span style=\" font-size:10pt;\">- Для запуска процесса ускорения вашего веб-сайта нажмите кнопку &quot;Ускорение работы сайта&quot; в главном меню.<br/>- Для получения списка HTML-тегов сайта нажмите кнопку &quot;Просмотр HTML-тегов веб-сайта&quot; в главном меню.<br/>- Для получения списка CSS-классов сайта нажмите кнопку &quot;Просмотр CSS-классов веб-сайта&quot; в главном меню.<br/>- Для получения списка CSS-идентификаторов сайта нажмите кнопку &quot;Просмотр CSS-идентификаторов веб-сайта&quot; <br/>в главном меню.<br/>После чего, нажмите кнопку активации действия в открывшейся форме.</span></p></body></html>"))
         self.pushButton.setText(_translate("MainWindow", "В главное меню"))
