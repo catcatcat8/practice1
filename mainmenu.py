@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'C:/Users/xiaomi/Documents/GitHub/practice1/mainmenu.ui'
+# Form implementation generated from reading ui file 'C:/Users/xiaomi/Documents/GitHub/practice1/qt/mainmenu.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.1
 #
@@ -19,36 +19,50 @@ class Ui_MainWindow(object):
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.label = QtWidgets.QLabel(self.centralwidget)
-        self.label.setGeometry(QtCore.QRect(310, 10, 381, 61))
+        self.label.setGeometry(QtCore.QRect(310, -10, 381, 61))
         self.label.setStyleSheet("color: rgb(255, 255, 255);")
         self.label.setObjectName("label")
         self.pushButton = QtWidgets.QPushButton(self.centralwidget)
-        self.pushButton.setGeometry(QtCore.QRect(130, 100, 721, 101))
+        self.pushButton.setGeometry(QtCore.QRect(130, 120, 721, 101))
         self.pushButton.setStyleSheet("background-color: rgb(255, 255, 255);\n"
 "font: 12pt \"MS Shell Dlg 2\";")
         self.pushButton.setObjectName("pushButton")
         self.pushButton_2 = QtWidgets.QPushButton(self.centralwidget)
-        self.pushButton_2.setGeometry(QtCore.QRect(130, 220, 721, 51))
+        self.pushButton_2.setGeometry(QtCore.QRect(130, 240, 721, 51))
         self.pushButton_2.setStyleSheet("background-color: rgb(255, 255, 255);\n"
 "font: 12pt \"MS Shell Dlg 2\";")
         self.pushButton_2.setObjectName("pushButton_2")
         self.pushButton_3 = QtWidgets.QPushButton(self.centralwidget)
-        self.pushButton_3.setGeometry(QtCore.QRect(130, 290, 721, 51))
+        self.pushButton_3.setGeometry(QtCore.QRect(130, 310, 721, 51))
         self.pushButton_3.setStyleSheet("background-color: rgb(255, 255, 255);\n"
 "font: 12pt \"MS Shell Dlg 2\";")
         self.pushButton_3.setObjectName("pushButton_3")
         self.pushButton_4 = QtWidgets.QPushButton(self.centralwidget)
-        self.pushButton_4.setGeometry(QtCore.QRect(130, 360, 721, 51))
+        self.pushButton_4.setGeometry(QtCore.QRect(130, 380, 721, 51))
         self.pushButton_4.setStyleSheet("background-color: rgb(255, 255, 255);\n"
 "font: 12pt \"MS Shell Dlg 2\";")
         self.pushButton_4.setObjectName("pushButton_4")
         self.pushButton_5 = QtWidgets.QPushButton(self.centralwidget)
-        self.pushButton_5.setGeometry(QtCore.QRect(760, 430, 181, 41))
-        self.pushButton_5.setStyleSheet("background-color: rgb(255, 255, 255);\n"
+        self.pushButton_5.setGeometry(QtCore.QRect(760, 440, 181, 41))
+        self.pushButton_5.setStyleSheet("background-color: rgb(168, 193, 221);\n"
 "font: 10pt \"MS Shell Dlg 2\";\n"
 "color: rgb(0, 0, 0);")
         self.pushButton_5.setIconSize(QtCore.QSize(40, 40))
         self.pushButton_5.setObjectName("pushButton_5")
+        self.pushButton_6 = QtWidgets.QPushButton(self.centralwidget)
+        self.pushButton_6.setGeometry(QtCore.QRect(180, 60, 271, 41))
+        self.pushButton_6.setStyleSheet("background-color: rgb(170, 0, 0);\n"
+"font: 10pt \"MS Shell Dlg 2\";\n"
+"color: rgb(255, 255, 255);")
+        self.pushButton_6.setIconSize(QtCore.QSize(40, 40))
+        self.pushButton_6.setObjectName("pushButton_6")
+        self.pushButton_7 = QtWidgets.QPushButton(self.centralwidget)
+        self.pushButton_7.setGeometry(QtCore.QRect(520, 60, 271, 41))
+        self.pushButton_7.setStyleSheet("background-color: rgb(170, 0, 0);\n"
+"font: 10pt \"MS Shell Dlg 2\";\n"
+"color: rgb(255, 255, 255);")
+        self.pushButton_7.setIconSize(QtCore.QSize(40, 40))
+        self.pushButton_7.setObjectName("pushButton_7")
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 960, 26))
@@ -70,3 +84,5 @@ class Ui_MainWindow(object):
         self.pushButton_3.setText(_translate("MainWindow", "Просмотр CSS-классов веб-сайта"))
         self.pushButton_4.setText(_translate("MainWindow", "Просмотр CSS-идентификаторов веб-сайта"))
         self.pushButton_5.setText(_translate("MainWindow", "Назад"))
+        self.pushButton_6.setText(_translate("MainWindow", "Выбрать HTML файлы сайта"))
+        self.pushButton_7.setText(_translate("MainWindow", "Выбрать CSS файлы сайта"))

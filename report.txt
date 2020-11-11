@@ -37,16 +37,16 @@ css\font-awesome.min.css
 ---Id list---
 section_start 
 accordion 
-ques 
-collapse 
+ques{{item[6]}} 
+collapse{{item[6]}} 
 sendresult 
 aCode 
 autoriz 
 myCarousel 
-card 
--1 
--2 
--3 
+card{{item[5]}} 
+{{item[5]}}-1 
+{{item[5]}}-2 
+{{item[5]}}-3 
 
 ---Class list---
 input80 
@@ -126,16 +126,6 @@ p-t-50
 p-b-51 
 
 Обработано 3 CSS файла:
-C:\Users\xiaomi\Documents\GitHub\practice1\HTML\css\util.css
-C:\Users\xiaomi\Documents\GitHub\practice1\HTML\css\main.css
-C:\Users\xiaomi\Documents\GitHub\practice1\HTML\css\font-awesome.min.css
-
-Размер css файлов:
- util.css: 84.76 kbytes
-_util.css: 1.75 kbytes
- main.css: 9.87 kbytes
-_main.css: 4.49 kbytes
- font-awesome.min.css: 30.28 kbytes
-_font-awesome.min.css: 30.28 kbytes
-
-Оптимизация составила 70.76%
+C:/Users/xiaomi/Documents/GitHub/practice1/HTML/css\util.css
+C:/Users/xiaomi/Documents/GitHub/practice1/HTML/css\main.css
+C:/Users/xiaomi/Documents/GitHub/practice1/HTML/css\font-awesome.min.css
