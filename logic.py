@@ -9,16 +9,6 @@ stats_text = ''
 optimized_base = []
 optimized_opt = []
 
-class Htmlobject:
-    """Класс, описывающий объект HTML"""
-
-    def __init__ (self, tag_name, class_names):  # инициализация
-        self.tag_name = tag_name
-        self.class_names = class_names
-
-    def htmlobject_print(self):
-        print(f'\nТег: {self.tag_name}\nИспользуемые классы CSS: {self.class_names}')  # вывод информации об объекте
-
 def html_css_existence(html_path, css_path):
     """Возвращает все файлы html и css переданные в run.bad"""
 
@@ -32,14 +22,12 @@ def html_css_existence(html_path, css_path):
             if only_file in listFiles:
                 all_html_docs.append(only_path+only_file)
         else: 
-            print('Html файл не найден!')
             report_file.write("Html файл не найден!")
     else:
         if os.path.exists(html_path):
             listFiles = os.listdir(html_path)
             all_html_docs = ([f'{html_path}\\' + x for x in listFiles if (x.split(".")[-1] in ["html", "htm"] and x.split(".")[-2][0] not in ["_"])])
         else:
-            print('Директория с файлами html не найдена!')
             report_file.write("Директория с файлами html не найдена!")
     if all_html_docs:  # если список переданных html файлов не пустой проверяем css
         if css_path.split('\\')[-1].find('.css') != -1:
@@ -50,7 +38,6 @@ def html_css_existence(html_path, css_path):
                 if only_file in listFiles:
                     all_css_docs.append(only_path+only_file)
             else: 
-                print('CSS файл не найден!')
                 report_file.write("CSS файл не найден!")
         else:
             if os.path.exists(css_path):
@@ -65,7 +52,6 @@ def html_css_existence(html_path, css_path):
                 for elem in dell:
                     all_css_docs.pop(elem)
             else:
-                print('Директория с файлами css не найдена!')
                 report_file.write("Директория с файлами css не найдена!")
     return all_html_docs, all_css_docs
 
@@ -340,7 +326,6 @@ def stats(count_css_processed):
     """Вернуть статистику об обработанных css файлах; если оптимизированный файл = 0kbytes, то скопировать исходный файл"""
 
     report_file = open("report.txt", "a", encoding="utf-8")
-    print('Размер css файлов:')
     global stats_text
     global optimized_base
     global optimized_opt
@@ -355,7 +340,6 @@ def stats(count_css_processed):
         base_css = css_file
         css_file1 = css_file[css_file.rfind('\\')+1:]
         base.append(size/1024)
-        print(f' {css_file1}: {round(size/1024, 2)} kbytes')
         stats_text += f'#{ind}  {css_file1}: {round(size/1024, 2)} kbytes\n'
         report_file.write(f' {css_file1}: {round(size/1024, 2)} kbytes\n')
         css_file = css_file[:css_file.rfind('\\')+1] + '_' + css_file[css_file.rfind('\\')+1:]
@@ -370,14 +354,12 @@ def stats(count_css_processed):
             size = os.path.getsize(css_file)
         css_file1 = css_file[css_file.rfind('\\')+1:]
         opt.append(size/1024)
-        print (f'{css_file1}: {round(size/1024, 2)} kbytes')
         stats_text += f'    {css_file1}: {round(size/1024, 2)} kbytes\n'
         report_file.write(f'{css_file1}: {round(size/1024, 2)} kbytes\n')
         ind += 1
     percent = round((1-sum(opt)/sum(base))*100, 2)
     optimized_base = base
     optimized_opt = opt
-    print(f'Оптимизация составила {percent}%')
     stats_text += f'Оптимизация составила {percent}%\n'
     stats_text = stats_text[:-1]
     report_file.write(f'\nОптимизация составила {percent}%\n')
