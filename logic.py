@@ -325,13 +325,13 @@ def new_html(file_path, cur_file_enc, css_docs):
 def stats(count_css_processed):
     """Вернуть статистику об обработанных css файлах; если оптимизированный файл = 0kbytes, то скопировать исходный файл"""
 
-    report_file = open("report.txt", "a", encoding="utf-8")
     global stats_text
     global optimized_base
     global optimized_opt
+    our_report_file = open('report.txt', 'a', encoding="utf-8")
     stats_text = ''
     stats_text += '\nРазмер css файлов:\n'
-    report_file.write("\nРазмер css файлов:\n")
+    our_report_file.write("\nРазмер css файлов:\n")
     base = []
     opt = []
     ind = 1
@@ -341,7 +341,7 @@ def stats(count_css_processed):
         css_file1 = css_file[css_file.rfind('\\')+1:]
         base.append(size/1024)
         stats_text += f'#{ind}  {css_file1}: {round(size/1024, 2)} kbytes\n'
-        report_file.write(f' {css_file1}: {round(size/1024, 2)} kbytes\n')
+        our_report_file.write(f' {css_file1}: {round(size/1024, 2)} kbytes\n')
         css_file = css_file[:css_file.rfind('\\')+1] + '_' + css_file[css_file.rfind('\\')+1:]
         size = os.path.getsize(css_file)  # размер css файла после оптимизации
         if size < 100:  # копируем исходный файл
@@ -355,14 +355,15 @@ def stats(count_css_processed):
         css_file1 = css_file[css_file.rfind('\\')+1:]
         opt.append(size/1024)
         stats_text += f'    {css_file1}: {round(size/1024, 2)} kbytes\n'
-        report_file.write(f'{css_file1}: {round(size/1024, 2)} kbytes\n')
+        our_report_file.write(f'{css_file1}: {round(size/1024, 2)} kbytes\n')
         ind += 1
     percent = round((1-sum(opt)/sum(base))*100, 2)
     optimized_base = base
     optimized_opt = opt
     stats_text += f'Оптимизация составила {percent}%\n'
     stats_text = stats_text[:-1]
-    report_file.write(f'\nОптимизация составила {percent}%\n')
+    our_report_file.write(f'\nОптимизация составила {percent}%\n')
+    our_report_file.close()
 
     return None
 
@@ -470,6 +471,7 @@ if __name__ == "__main__":
         [print(x) for x in count_css_processed]
         report_file.write(f'\n\nОбработано {len(count_css_processed)} CSS файла:\n')
         [report_file.write(f'{x}\n') for x in count_css_processed]
+        report_file.close()
         stats(count_css_processed)
     else:
         print(_tmp)

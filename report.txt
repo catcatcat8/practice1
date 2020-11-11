@@ -129,3 +129,13 @@ p-b-51
 C:/Users/xiaomi/Documents/GitHub/practice1/HTML/css\util.css
 C:/Users/xiaomi/Documents/GitHub/practice1/HTML/css\main.css
 C:/Users/xiaomi/Documents/GitHub/practice1/HTML/css\font-awesome.min.css
+
+Размер css файлов:
+ util.css: 84.76 kbytes
+_util.css: 1.75 kbytes
+ main.css: 9.87 kbytes
+_main.css: 4.49 kbytes
+ font-awesome.min.css: 30.28 kbytes
+_font-awesome.min.css: 30.28 kbytes
+
+Оптимизация составила 70.76%

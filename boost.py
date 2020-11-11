@@ -344,6 +344,7 @@ class SeeBoostApp(QtWidgets.QMainWindow, see_boost.Ui_MainWindow):
             [self.textBrowser.append(x) for x in count_css_processed]
             report_file.write(f'\n\nОбработано {len(count_css_processed)} CSS файла:\n')
             [report_file.write(f'{x}\n') for x in count_css_processed]
+            report_file.close()
             logic.stats(count_css_processed)
             global statistics
             statistics = logic.stats_text
