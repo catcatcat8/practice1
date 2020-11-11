@@ -14,7 +14,8 @@
    <string>Программа ускорения работы веб-сайтов</string>
   </property>
   <property name="windowIcon">
-   <iconset theme="logo.png"/>
+   <iconset theme="logo.png">
+    <normaloff>.</normaloff>.</iconset>
   </property>
   <property name="styleSheet">
    <string notr="true">background-color: rgb(0, 165, 221);</string>
@@ -89,7 +90,7 @@ color: rgb(0, 0, 0);</string>
      <string/>
     </property>
     <property name="pixmap">
-     <pixmap>boost.jpeg</pixmap>
+     <pixmap>../boost.jpeg</pixmap>
     </property>
    </widget>
    <widget class="QPushButton" name="pushButton_2">
@@ -131,7 +132,7 @@ font: 10pt &quot;MS Shell Dlg 2&quot;;
 color: rgb(0, 0, 0);</string>
     </property>
     <property name="text">
-     <string>Справка</string>
+     <string>Помощь</string>
     </property>
     <property name="iconSize">
      <size>

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'C:/Users/xiaomi/Documents/GitHub/practice1/mainpage.ui'
+# Form implementation generated from reading ui file 'C:/Users/xiaomi/Documents/GitHub/practice1/qt/mainpage.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.1
 #
@@ -38,7 +38,7 @@ class Ui_MainWindow(object):
         self.label_3 = QtWidgets.QLabel(self.centralwidget)
         self.label_3.setGeometry(QtCore.QRect(160, 200, 361, 291))
         self.label_3.setText("")
-        self.label_3.setPixmap(QtGui.QPixmap("C:/Users/xiaomi/Documents/GitHub/practice1\\boost.jpeg"))
+        self.label_3.setPixmap(QtGui.QPixmap("C:/Users/xiaomi/Documents/GitHub/practice1/qt\\../boost.jpeg"))
         self.label_3.setObjectName("label_3")
         self.pushButton_2 = QtWidgets.QPushButton(self.centralwidget)
         self.pushButton_2.setGeometry(QtCore.QRect(670, 220, 231, 61))
@@ -73,4 +73,4 @@ class Ui_MainWindow(object):
         self.label.setText(_translate("MainWindow", "<html><head/><body><p><span style=\" font-size:14pt;\">Разработчик: Лебедев Евгений<br/>(telegram: @lebedev666e)</span></p></body></html>"))
         self.pushButton.setText(_translate("MainWindow", "Выход"))
         self.pushButton_2.setText(_translate("MainWindow", "Меню функций программы"))
-        self.pushButton_3.setText(_translate("MainWindow", "Справка"))
+        self.pushButton_3.setText(_translate("MainWindow", "Помощь"))
