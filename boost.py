@@ -20,6 +20,7 @@ optimized_base = []
 optimized_opt = []
 
 class ExampleApp(QtWidgets.QMainWindow, mainpage.Ui_MainWindow):
+    '''Форма главного экрана программы'''
 
     def __init__(self):
         super().__init__()
@@ -49,6 +50,7 @@ class ExampleApp(QtWidgets.QMainWindow, mainpage.Ui_MainWindow):
         self.menu_form.show()
 
 class MenuApp(QtWidgets.QMainWindow, mainmenu.Ui_MainWindow):
+    '''Форма меню'''
 
     def __init__(self):
         super().__init__()
@@ -131,6 +133,7 @@ class MenuApp(QtWidgets.QMainWindow, mainmenu.Ui_MainWindow):
             
 
 class ReferenceApp(QtWidgets.QMainWindow, reference.Ui_MainWindow):
+    '''Форма помощи по работе программы'''
 
     def __init__(self):
         super().__init__()
@@ -140,6 +143,7 @@ class ReferenceApp(QtWidgets.QMainWindow, reference.Ui_MainWindow):
         self.pushButton.clicked.connect(self.close)
 
 class SeeTagsApp(QtWidgets.QMainWindow, see_tags.Ui_MainWindow):
+    '''Форма просмотра тегов'''
 
     def __init__(self):
         super().__init__()
@@ -175,6 +179,7 @@ class SeeTagsApp(QtWidgets.QMainWindow, see_tags.Ui_MainWindow):
             msg.exec_()
 
 class SeeClassesApp(QtWidgets.QMainWindow, see_classes.Ui_MainWindow):
+    '''Форма просмотра CSS-классов'''
 
     def __init__(self):
         super().__init__()
@@ -209,6 +214,7 @@ class SeeClassesApp(QtWidgets.QMainWindow, see_classes.Ui_MainWindow):
             msg.exec_()
 
 class SeeIdsApp(QtWidgets.QMainWindow, see_ids.Ui_MainWindow):
+    '''Форма просмотра CSS-идентификаторов'''
 
     def __init__(self):
         super().__init__()
@@ -243,6 +249,7 @@ class SeeIdsApp(QtWidgets.QMainWindow, see_ids.Ui_MainWindow):
             msg.exec_()
 
 class SeeBoostApp(QtWidgets.QMainWindow, see_boost.Ui_MainWindow):
+    '''Форма ускорения работы веб-сайта'''
 
     def __init__(self):
         super().__init__()
@@ -353,6 +360,8 @@ class SeeBoostApp(QtWidgets.QMainWindow, see_boost.Ui_MainWindow):
             "font: 10pt \"MS Shell Dlg 2\";\n"
             "color: rgb(255, 255, 255);")
 
+            # --- Шаг 6
+            # Построение графика размера файлов до/после оптимизации
             global optimized_base, optimized_opt
             optimized_base = logic.optimized_base
             optimized_opt = logic.optimized_opt

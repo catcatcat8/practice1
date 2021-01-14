@@ -65,7 +65,8 @@ def test_class_list():
 def test_id_list():
     """Тест проверки возвращаемых идентификаторов css"""
 
-    list_ids_examhtml = ['section_start', 'accordion', 'ques', 'collapse', 'sendresult']  # список идентификаторов exam.html
+    list_ids_examhtml = ['section_start', 'accordion', r'ques{{item[6]}}', r'collapse{{item[6]}}',
+    'sendresult']  # список идентификаторов exam.html
     exam_html_path = 'C:\\Users\\xiaomi\\Documents\\GitHub\\practice1\\HTML\\exam.html'
     id_list = logic.id_list(exam_html_path, 'utf-8')
     assert id_list == list_ids_examhtml,  'ошибка списка id "exam.html"'

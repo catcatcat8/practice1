@@ -32,7 +32,9 @@ LABEL
 ---Local CSS styles---
 css\util.css 
 css\main.css 
-css\font-awesome.min.css 
+util.css 
+main.css 
+font-awesome.min.css 
 
 ---Id list---
 section_start 
